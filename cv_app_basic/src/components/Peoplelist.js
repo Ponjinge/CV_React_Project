@@ -3,7 +3,7 @@ import React from 'react';
 import PersonComponent from './PersonComponent'; 
 import jsonData from '../test_data/jsonData.json';
 
-const Peoplelist = () => {
+export default function Peoplelist(){
   return (
     <div>
       <h1>People List</h1>
@@ -12,6 +12,5 @@ const Peoplelist = () => {
       ))}
     </div>
   );
-};
+}
 
-export default Peoplelist;

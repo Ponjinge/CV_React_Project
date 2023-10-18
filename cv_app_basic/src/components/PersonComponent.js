@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-const PersonComponent = ({ name, title, research }) => {
+export default function PersonComponent({ name, title, research }){
   return (
     <div>
       <h2>{name}</h2>
@@ -17,6 +17,6 @@ const PersonComponent = ({ name, title, research }) => {
       </ul>
     </div>
   );
-};
+}
 
-export default PersonComponent;
+
