@@ -1,0 +1,47 @@
+{
+    "people": [
+      {
+        "name": "John Doe",
+        "title": "Professor",
+        "research": [
+          {
+            "title": "Machine Learning Algorithms for Image Recognition",
+            "year": 2020
+          },
+          {
+            "title": "Advancements in Natural Language Processing",
+            "year": 2018
+          }
+        ]
+      },
+      {
+        "name": "Jane Smith",
+        "title": "Research Scientist",
+        "research": [
+          {
+            "title": "Exploring Quantum Computing",
+            "year": 2022
+          },
+          {
+            "title": "Applications of Neural Networks in Medicine",
+            "year": 2019
+          }
+        ]
+      },
+      {
+        "name": "Alex Johnson",
+        "title": "Data Scientist",
+        "research": [
+          {
+            "title": "Predictive Analytics in Financial Markets",
+            "year": 2021
+          },
+          {
+            "title": "Big Data Analysis in Healthcare",
+            "year": 2017
+          }
+        ]
+      }
+    ]
+  }
+  
