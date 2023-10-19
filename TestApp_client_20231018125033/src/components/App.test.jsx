@@ -122,7 +122,7 @@ test("allows you to CRUD to-do items", async () => {
   );
   // Mark the second To-Do as completed
   const checkboxes = screen
-    .getAllByTestId("todo-checkbox")
+    .getAllByTestId("CV-checkbox")
     .map((el) => el.childNodes[0]);
   expect(checkboxes[0].parentElement).not.toHaveClass("Mui-checked");
   expect(checkboxes[1].parentElement).not.toHaveClass("Mui-checked");
@@ -135,7 +135,7 @@ test("allows you to CRUD to-do items", async () => {
     { timeout: 4000 }
   );
   // Delete the first To-Do
-  const deleteButtons = screen.getAllByTestId("todo-delete-button");
+  const deleteButtons = screen.getAllByTestId("CV-delete-button");
   expect(deleteButtons.length).toBe(2);
   await user.click(deleteButtons[0]);
   await wait(10);

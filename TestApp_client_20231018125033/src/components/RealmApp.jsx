@@ -18,6 +18,9 @@ export function AppProvider({ appId, children }) {
   }, [appId]);
   // Store the app's current user in state and wrap the built-in auth functions to modify this state
   const [currentUser, setCurrentUser] = React.useState(app.currentUser);
+  //Use this for the element selection
+  
+
   // Wrap the base logIn function to save the logged in user in state
   const logIn = React.useCallback(
     async (credentials) => {

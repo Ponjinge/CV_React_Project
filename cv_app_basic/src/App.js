@@ -2,7 +2,6 @@ import React from "react";
 import PeopleList from "./components/Peoplelist";
 import Formulaire from "./components/Formulaire";
 import jsonData from "./test_data/jsonData.json";
-import Form from "./components/Form";
 import MongoForm from "./components/MongoForm";
 import "./App.css";
 

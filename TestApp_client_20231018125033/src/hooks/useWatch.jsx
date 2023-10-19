@@ -42,7 +42,7 @@ export function useWatch(collection, changeHandlers) {
   // Set up a MongoDB change stream that calls the provided change handler callbacks.
   React.useEffect(() => {
     let stream;
-    const watchTodos = async () => {
+    const watchCVs = async () => {
       stream = collection.watch({ filter });
       for await (const change of stream) {
         switch (change.operationType) {
@@ -71,7 +71,7 @@ export function useWatch(collection, changeHandlers) {
         }
       }
     };
-    watchTodos();
+    watchCVs();
     return () => {
       // Close the change stream in the effect cleanup
       stream?.return()
