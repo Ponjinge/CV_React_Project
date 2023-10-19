@@ -12,15 +12,14 @@ function MoreInfoItem({ children }) {
 }
 
 export function MoreInfoDocsLink() {
-  const docsPath = "/docs/atlas/app-services/";
-  const docsLink = new URL(docsPath, "https://mongodb.com");
+  const gitLink = new URL("https://github.com/M1-MIAGE-IDA/ProjetWeb");
   return (
     <MoreInfoItem>
       <span>{
-        "Built with the Atlas App Services MQL Template"
-      }</span> |{" "}
-      <Link target="_blank" href={docsLink}>
-        Docs
+        "For more information, see the"
+      }</span> {" "}
+      <Link target="_blank" href={gitLink}>
+        Repo Docs
       </Link>
     </MoreInfoItem>
   );
