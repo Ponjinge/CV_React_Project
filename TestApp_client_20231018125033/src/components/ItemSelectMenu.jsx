@@ -10,6 +10,7 @@ import {
     MenuItem,
     SelectChangeEvent ,
     } from "@mui/material";
+import { CVItem } from "./CVItem";
 
 
 
@@ -17,12 +18,11 @@ export function ItemSelectMenu(){
     const [chosenElement, setChosenElement] = React.useState(null);
     const handleElementSelect = (element) => {
         setChosenElement(element);
-    };
+    };  
     return(
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
-          value={age}
           label="Item Select Menu"
         >
           <MenuItem onClick={() => handleElementSelect('name')}>Name</MenuItem>
