@@ -50,7 +50,7 @@ export function CVItemsPage() {
             Choose CV Element
           </Button>
 
-          {itemSelect && (
+          {itemSelect && ( //Replace by ItemSelectMenu when finsihed
             <List>
               <Button
                 variant="contained"

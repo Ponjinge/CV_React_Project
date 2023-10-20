@@ -5,8 +5,8 @@ import App from "./App";
 const now = Date.now();
 const nonce = Math.floor(10000 * Math.random());
 
-const TEST_USERNAME = `test-user-${now}-${nonce}@example.com`;
-const TEST_PASSWORD = "Password123";
+const TEST_USERNAME = `test-user-${now}-${nonce}@gmail.com`;
+const TEST_PASSWORD = "Password12349383838";
 
 function wait(ms = 0) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -44,7 +44,7 @@ test("allows you to sign up for a new account", async () => {
   await wait(10);
   await waitFor(
     () => {
-      expect(screen.queryByText(/You have 0 To-Do Items/i)).toBeInTheDocument();
+      expect(screen.queryByText(/You have 0 CV Items/i)).toBeInTheDocument();
     },
     { timeout: 7000 }
   );
@@ -70,53 +70,53 @@ test("allows you to log in with an existing account", async () => {
   await waitFor(
     () => {
       expect(
-        screen.queryByText(/You have (.+) To-Do Item(s?)/i)
+        screen.queryByText(/You have (.+) CV Item(s?)/i)
       ).toBeInTheDocument();
     },
     { timeout: 5000 }
   );
 }, 7000);
 
-test("allows you to CRUD to-do items", async () => {
+test("allows you to CRUD CV items", async () => {
   const { user } = setup(<App />);
   await waitFor(
     () => {
-      expect(screen.queryByText(/You have 0 To-Do Items/i)).toBeInTheDocument();
+      expect(screen.queryByText(/You have 0 CV Items/i)).toBeInTheDocument();
     },
     { timeout: 4000 }
   );
-  // Add the first To-Do
-  await user.click(screen.queryByText(/Add To-Do/i));
+  // Add the first CV Item 
+  await user.click(screen.queryByText(/Add CV Item/i));
   await user.type(
-    screen.queryByPlaceholderText("What needs doing?"),
-    "Do the dishes"
+    screen.queryByPlaceholderText("name"),
+    "John"
   );
   await user.click(screen.queryByText(/Save/i));
   await wait(10);
   await waitFor(
     () => {
       expect(
-        screen.queryByPlaceholderText("What needs doing?")
+        screen.queryByPlaceholderText("name")
       ).not.toBeInTheDocument();
-      expect(screen.queryByText(/You have 1 To-Do Item/i)).toBeInTheDocument();
-      expect(screen.queryByText(/Do the dishes/i)).toBeInTheDocument();
+      expect(screen.queryByText(/You have 1 CV Item/i)).toBeInTheDocument();
+      expect(screen.queryByText(/John/i)).toBeInTheDocument();
     },
     { timeout: 10000 }
   );
   // Add a second To-Do
-  await user.click(screen.queryByText(/Add To-Do/i));
+  await user.click(screen.queryByText(/Add CV Item/i));
   await user.type(
-    screen.queryByPlaceholderText("What needs doing?"),
-    "Do the laundry"
+    screen.queryByPlaceholderText("name"),
+    "Pork"
   );
   await user.click(screen.queryByText(/Save/i));
   await wait(10);
   await waitFor(
     () => {
       expect(
-        screen.queryByPlaceholderText("What needs doing?")
+        screen.queryByPlaceholderText("name")
       ).not.toBeInTheDocument();
-      expect(screen.queryByText(/You have 2 To-Do Items/i)).toBeInTheDocument();
+      expect(screen.queryByText(/You have 2 CV Items/i)).toBeInTheDocument();
     },
     { timeout: 8000 }
   );
@@ -134,15 +134,15 @@ test("allows you to CRUD to-do items", async () => {
     },
     { timeout: 4000 }
   );
-  // Delete the first To-Do
+  // Delete the first CV Item
   const deleteButtons = screen.getAllByTestId("CV-delete-button");
   expect(deleteButtons.length).toBe(2);
   await user.click(deleteButtons[0]);
   await wait(10);
   await waitFor(
     () => {
-      expect(screen.queryByText(/You have 1 To-Do Item/i)).toBeInTheDocument();
-      expect(screen.queryByText(/Do the laundry/i)).toBeInTheDocument();
+      expect(screen.queryByText(/You have 1 CV Item/i)).toBeInTheDocument();
+      expect(screen.queryByText(/Pork/i)).toBeInTheDocument();
     },
     { timeout: 10000 }
   );

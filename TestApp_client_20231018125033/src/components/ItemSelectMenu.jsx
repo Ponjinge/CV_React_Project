@@ -9,7 +9,11 @@ import {
     Select,
     MenuItem,
     SelectChangeEvent ,
-    } from "@mui/material";
+    Button,
+    List,
+    } from "@mui/material"; //Check the mui material documentation
+    // for more info on these components and more components 
+import { CVItem } from "./CVItem";
 
 
 
@@ -17,19 +21,32 @@ export function ItemSelectMenu(){
     const [chosenElement, setChosenElement] = React.useState(null);
     const handleElementSelect = (element) => {
         setChosenElement(element);
-    };
-    return(
-        <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          value={age}
-          label="Item Select Menu"
-        >
-          <MenuItem onClick={() => handleElementSelect('name')}>Name</MenuItem>
-          <MenuItem onClick={() => handleElementSelect('surname')}>Surname</MenuItem>
-          <MenuItem onClick={() => handleElementSelect('nationality')}>Nationality</MenuItem>
-          {/* Add more menu items as needed */}
-          </Select>
+    };  
+    return( //Replace this List either with a Select Menu ,
+    //Or with a button  for each element in the CV form using a list of elements 
+        <List>
+              <Button
+                variant="contained"
+                color="primary"
+                startIcon={<AddIcon />}
+                onClick={() => handleElementSelect("name")}>
+                Name
+              </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                startIcon={<AddIcon />}
+                onClick={() => handleElementSelect("surname")}>
+                Surname
+              </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                startIcon={<AddIcon />}
+                onClick={() => handleElementSelect("nationality")}>
+                Nationality
+              </Button>
+            </List>
     );   
 }
 

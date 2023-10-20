@@ -22,6 +22,8 @@ function App() {
   const { currentUser, logOut } = useApp();
   return (
     <div className="App">
+      
+      {/* This is the app bar that will be displayed at the top of the page */}
       <AppBar position="sticky">
         <Toolbar>
           <AppName />
@@ -38,6 +40,9 @@ function App() {
           ) : null}
         </Toolbar>
       </AppBar>
+      {/* If a user is signed in, load the CV Item Page. Else load the sign up/log in page */}
+      {/* We can add another conditional statement here to render the CV visualizer here*/}
+      {/* or add a button on the CV Composition page  */}
       {currentUser ? <CVItemsPage /> : <WelcomePage />}
     </div>
   );
