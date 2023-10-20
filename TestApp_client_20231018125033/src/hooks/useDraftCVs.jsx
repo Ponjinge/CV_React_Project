@@ -11,7 +11,6 @@ export function useDraftCVs() {
       _id: createObjectId(),
       name: "",
       surname: "",
-      email: "",
       nationality: "",
       isComplete: false,
     };
