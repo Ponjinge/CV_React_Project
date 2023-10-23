@@ -16,43 +16,37 @@ const ListItemWithTwoSecondaryActions = withStyles(ListItem, {
   },
 });
 
-//Here we can add extra text fields for the CV form, but this is a short term solution,
-//as it would be better to have a more generic solution that can support adding more fields to the CV form
-//The best course of action would be to modify this function so that it takes in the field name as a parameter 
-//and then creates a text field for that field name
 
-//implementation in CVItemsPage.jsx
-export function DraftCVItem({ CV, CVActions, draftCVActions, CV_element }) {
+export function DraftTodoItem({ todo, todoActions, draftTodoActions }) {
   return (
     <ListItemWithTwoSecondaryActions>
       <ListItemText inset>
         <TextField
           style={{ width: "100%" }}
-          placeholder={CV_element}
+          placeholder="What needs doing?"
           size="small"
-          value={CV[CV_element]}
+          value={todo.name}
           onChange={(e) => {
-            draftCVActions.setDraftCVElement(CV, e.target.value);
+            draftTodoActions.setDraftTodoName(todo, e.target.value);
           }}
         />
-        
       </ListItemText>
       <ListItemSecondaryAction>
         <Button
           variant="outlined"
           size="small"
           onClick={async () => {
-            await CVActions.saveCV(CV);
-            draftCVActions.deleteDraftCVElement(CV);
+            await todoActions.saveTodo(todo);
+            draftTodoActions.deleteDraftTodo(todo);
           }}
         >
-          Save  
+          Save
         </Button>
         <IconButton
           edge="end"
           size="small"
           onClick={() => {
-            draftCVActions.deleteDraftCVElement(CV);
+            draftTodoActions.deleteDraftTodo(todo);
           }}
         >
           <ClearIcon />
