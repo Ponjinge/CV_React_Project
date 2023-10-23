@@ -12,3 +12,9 @@ export function AppName() {
     </Typography>
   );
 }
+
+
+//  New API Key
+// Public :yjjbasgf
+// Private : 5d90b05e-ddaa-4a55-9891-26d8359dd6ec
+
