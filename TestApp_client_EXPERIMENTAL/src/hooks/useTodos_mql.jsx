@@ -8,100 +8,100 @@ import {
   replaceValueAtIndex,
   updateValueAtIndex,
   removeValueAtIndex,
-  getTodoIndex,
+  getCVIndex,
 } from "../utils";
 
 const { dataSourceName } = atlasConfig;
 
-export function useTodos() {
-  // Set up a list of todos in state
+export function useCVs() {
+  // Set up a list of cvs in state
   const app = useApp();
-  const [todos, setTodos] = React.useState([]);
+  const [cvs, setCVs] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
 
-  // Get a client object for the todo item collection
-  const todoItemCollection = useCollection({
+  // Get a client object for the cv item collection
+  const cvItemCollection = useCollection({
     cluster: dataSourceName,
-    db: "todo",
+    db: "cv",
     collection: "Item",
   });
 
-  // Fetch all todos on load and whenever our collection changes (e.g. if the current user changes)
+  // Fetch all cvs on load and whenever our collection changes (e.g. if the current user changes)
   React.useEffect(() => {
     let shouldUpdate = true;
-    const fetchTodos = todoItemCollection.find({})
+    const fetchCVs = cvItemCollection.find({})
     if (shouldUpdate) {
-      fetchTodos.then((fetchedTodos) => {
-        setTodos(fetchedTodos);
+      fetchCVs.then((fetchedCVs) => {
+        setCVs(fetchedCVs);
         setLoading(false);
       });
     }
     return () => {
       shouldUpdate = false;
     }
-  }, [todoItemCollection]);
+  }, [cvItemCollection]);
 
   // Use a MongoDB change stream to reactively update state when operations succeed
-  useWatch(todoItemCollection, {
+  useWatch(cvItemCollection, {
     onInsert: (change) => {
-      setTodos((oldTodos) => {
+      setCVs((oldCVs) => {
         if (loading) {
-          return oldTodos;
+          return oldCVs;
         }
         const idx =
-          getTodoIndex(oldTodos, change.fullDocument) ?? oldTodos.length;
-        if (idx === oldTodos.length) {
-          return addValueAtIndex(oldTodos, idx, change.fullDocument);
+          getCVIndex(oldCVs, change.fullDocument) ?? oldCVs.length;
+        if (idx === oldCVs.length) {
+          return addValueAtIndex(oldCVs, idx, change.fullDocument);
         } else {
-          return oldTodos;
+          return oldCVs;
         }
       });
     },
     onUpdate: (change) => {
-      setTodos((oldTodos) => {
+      setCVs((oldCVs) => {
         if (loading) {
-          return oldTodos;
+          return oldCVs;
         }
-        const idx = getTodoIndex(oldTodos, change.fullDocument);
-        return updateValueAtIndex(oldTodos, idx, () => {
+        const idx = getCVIndex(oldCVs, change.fullDocument);
+        return updateValueAtIndex(oldCVs, idx, () => {
           return change.fullDocument;
         });
       });
     },
     onReplace: (change) => {
-      setTodos((oldTodos) => {
+      setCVs((oldCVs) => {
         if (loading) {
-          return oldTodos;
+          return oldCVs;
         }
-        const idx = getTodoIndex(oldTodos, change.fullDocument);
-        return replaceValueAtIndex(oldTodos, idx, change.fullDocument);
+        const idx = getCVIndex(oldCVs, change.fullDocument);
+        return replaceValueAtIndex(oldCVs, idx, change.fullDocument);
       });
     },
     onDelete: (change) => {
-      setTodos((oldTodos) => {
+      setCVs((oldCVs) => {
         if (loading) {
-          return oldTodos;
+          return oldCVs;
         }
-        const idx = getTodoIndex(oldTodos, { _id: change.documentKey._id });
+        const idx = getCVIndex(oldCVs, { _id: change.documentKey._id });
         if (idx >= 0) {
-          return removeValueAtIndex(oldTodos, idx);
+          return removeValueAtIndex(oldCVs, idx);
         } else {
-          return oldTodos;
+          return oldCVs;
         }
       });
     },
   });
 
-  // Given a draft todo, format it and then insert it
-  const saveTodo = async (draftTodo) => {
-    if (draftTodo.name) {
-      draftTodo.owner_id = app.currentUser.id;
+  // Given a draft cv, format it and then insert it
+  const saveCV = async (draftCV) => {
+    if (draftCV.name) {
+      draftCV.owner_id = app.currentUser.id;
       try {
-        await todoItemCollection.insertOne(draftTodo);
+        await cvItemCollection.insertOne(draftCV);
       } catch (err) {
         if (err.error.match(/^Duplicate key error/)) {
           console.warn(
-            `The following error means that this app tried to insert a todo multiple times (i.e. an existing todo has the same _id). In this app we just catch the error and move on. In your app, you might want to debounce the save input or implement an additional loading state to avoid sending the request in the first place.`
+            `The following error means that this app tried to insert a cv multiple times (i.e. an existing cv has the same _id). In this app we just catch the error and move on. In your app, you might want to debounce the save input or implement an additional loading state to avoid sending the request in the first place.`
           );
         }
         console.error(err);
@@ -109,24 +109,24 @@ export function useTodos() {
     }
   };
 
-  // Toggle whether or not a given todo is Selected
-  const toggleTodo = async (todo) => {
-    await todoItemCollection.updateOne(
-      { _id: todo._id },
-      { $set: { isSelected: !todo.isSelected } }
+  // Toggle whether or not a given cv is Selected
+  const toggleCV = async (cv) => {
+    await cvItemCollection.updateOne(
+      { _id: cv._id },
+      { $set: { isSelected: !cv.isSelected } }
     );
   };
 
-  // Delete a given todo
-  const deleteTodo = async (todo) => {
-    await todoItemCollection.deleteOne({ _id: todo._id });
+  // Delete a given cv
+  const deleteCV = async (cv) => {
+    await cvItemCollection.deleteOne({ _id: cv._id });
   };
 
   return {
     loading,
-    todos,
-    saveTodo,
-    toggleTodo,
-    deleteTodo,
+    cvs,
+    saveCV,
+    toggleCV,
+    deleteCV,
   };
 }

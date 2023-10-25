@@ -1,6 +1,6 @@
 import { AppBar, Toolbar, Button, Typography } from "@mui/material";
 import { WelcomePage } from "./WelcomePage";
-import { TodoItemsPage } from "./TodoItemsPage";
+import { CVItemsPage } from "./CVItemsPage";
 import { AppProvider, useApp } from "./RealmApp";
 import { ThemeProvider } from "./Theme";
 import { AppName } from "./AppName";
@@ -38,7 +38,7 @@ function App() {
           ) : null}
         </Toolbar>
       </AppBar>
-      {currentUser ? <TodoItemsPage /> : <WelcomePage />}
+      {currentUser ? <CVItemsPage /> : <WelcomePage />}
     </div>
   );
 }

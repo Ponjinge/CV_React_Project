@@ -1,19 +1,19 @@
 import React from "react";
 import { createObjectId } from "../utils";
 
-export function useDraftTodos() {
+export function useDraftCVs() {
   const [drafts, setDrafts] = React.useState([]);
 
-  const createDraftTodo = () => {
-    const draftTodo = {
+  const createDraftCV = () => {
+    const draftCV = {
       _id: createObjectId(),
       name: "",
       isSelected: false,
     };
-    setDrafts((d) => [...d, draftTodo]);
+    setDrafts((d) => [...d, draftCV]);
   };
 
-  const setDraftTodoName = (draft, name) => {
+  const setDraftCVName = (draft, name) => {
     setDrafts((oldDrafts) => {
       const idx = oldDrafts.findIndex((d) => d._id === draft._id);
       return [
@@ -24,7 +24,7 @@ export function useDraftTodos() {
     });
   };
 
-  const deleteDraftTodo = (draft) => {
+  const deleteDraftCV = (draft) => {
     setDrafts((oldDrafts) => {
       const idx = oldDrafts.findIndex((d) => d._id === draft._id);
       return [...oldDrafts.slice(0, idx), ...oldDrafts.slice(idx + 1)];
@@ -32,9 +32,9 @@ export function useDraftTodos() {
   };
 
   return {
-    draftTodos: drafts,
-    createDraftTodo,
-    setDraftTodoName,
-    deleteDraftTodo,
+    draftCVs: drafts,
+    createDraftCV,
+    setDraftCVName,
+    deleteDraftCV,
   };
 }

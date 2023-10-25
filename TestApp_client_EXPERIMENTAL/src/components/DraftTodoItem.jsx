@@ -17,7 +17,7 @@ const ListItemWithTwoSecondaryActions = withStyles(ListItem, {
 });
 
 
-export function DraftTodoItem({ todo, todoActions, draftTodoActions }) {
+export function DraftCVItem({ cv, cvActions, draftCVActions }) {
   return (
     <ListItemWithTwoSecondaryActions>
       <ListItemText inset>
@@ -25,9 +25,9 @@ export function DraftTodoItem({ todo, todoActions, draftTodoActions }) {
           style={{ width: "100%" }}
           placeholder="What needs doing?"
           size="small"
-          value={todo.name}
+          value={cv.name}
           onChange={(e) => {
-            draftTodoActions.setDraftTodoName(todo, e.target.value);
+            draftCVActions.setDraftCVName(cv, e.target.value);
           }}
         />
       </ListItemText>
@@ -36,8 +36,8 @@ export function DraftTodoItem({ todo, todoActions, draftTodoActions }) {
           variant="outlined"
           size="small"
           onClick={async () => {
-            await todoActions.saveTodo(todo);
-            draftTodoActions.deleteDraftTodo(todo);
+            await cvActions.saveCV(cv);
+            draftCVActions.deleteDraftCV(cv);
           }}
         >
           Save
@@ -46,7 +46,7 @@ export function DraftTodoItem({ todo, todoActions, draftTodoActions }) {
           edge="end"
           size="small"
           onClick={() => {
-            draftTodoActions.deleteDraftTodo(todo);
+            draftCVActions.deleteDraftCV(cv);
           }}
         >
           <ClearIcon />
