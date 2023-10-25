@@ -9,28 +9,28 @@ import {
 } from "@mui/material";
 import ClearIcon from "@mui/icons-material/Clear";
 
-export function TodoItem({ todo, todoActions }) {
+export function CVItem({ cv, cvActions }) {
   return (
     <ListItem>
       <ListItemIcon>
         <Checkbox
-          data-testid="todo-checkbox"
+          data-testid="cv-checkbox"
           edge="start"
           color="primary"
-          checked={todo.isComplete}
+          checked={cv.isSelected}
           onClick={() => {
-            todoActions.toggleTodo(todo);
+            cvActions.toggleCV(cv);
           }}
         />
       </ListItemIcon>
-      <ListItemText>{todo.name}</ListItemText>
+      <ListItemText>{cv.name}</ListItemText>
       <ListItemSecondaryAction>
         <IconButton
-          data-testid="todo-delete-button"
+          data-testid="cv-delete-button"
           edge="end"
           size="small"
           onClick={() => {
-            todoActions.deleteTodo(todo);
+            cvActions.deleteCV(cv);
           }}
         >
           <ClearIcon />

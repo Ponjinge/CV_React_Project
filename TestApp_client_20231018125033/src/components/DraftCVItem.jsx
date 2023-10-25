@@ -30,7 +30,7 @@ export function DraftCVItem({ CV, CVActions, draftCVActions, CV_element }) {
           style={{ width: "100%" }}
           placeholder={CV_element}
           size="small"
-          value={CV[CV_element]}
+          value={CV.name}
           onChange={(e) => {
             draftCVActions.setDraftCVElement(CV, e.target.value);
           }}

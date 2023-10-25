@@ -37,17 +37,17 @@ export const createObjectId = () => {
   return new Realm.BSON.ObjectId()
 };
 
-export const getTodoId = (todo) => {
-  if (todo._id instanceof Realm.BSON.ObjectId) {
-    return todo._id.toHexString();
+export const getCVId = (cv) => {
+  if (cv._id instanceof Realm.BSON.ObjectId) {
+    return cv._id.toHexString();
   }
-  return todo._id
+  return cv._id
 };
 
-export const isSameTodo = (todo1, todo2) =>
-  getTodoId(todo1) === getTodoId(todo2);
+export const isSameCV = (cv1, cv2) =>
+  getCVId(cv1) === getCVId(cv2);
 
-export const getTodoIndex = (todos, todo) => {
-  const idx = todos.findIndex((t) => isSameTodo(t, todo));
+export const getCVIndex = (cvs, cv) => {
+  const idx = cvs.findIndex((t) => isSameCV(t, cv));
   return idx >= 0 ? idx : null;
 }

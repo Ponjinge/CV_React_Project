@@ -9,7 +9,7 @@ The client allows you to:
 
 - Sign up and log in as an Email/Password user
 
-- Create, check off, and delete to-do items
+- Create, check off, and delete CV element items
 
 The client connects to Atlas App Services using `Remote MongoDB Queries <https://mongodb.com/docs/realm/web/mongodb/>`_ from the Realm SDK.
 
