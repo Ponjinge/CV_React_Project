@@ -22,7 +22,7 @@ export function useCVs() {
   // Get a client object for the cv item collection
   const cvItemCollection = useCollection({
     cluster: dataSourceName,
-    db: "cv",
+    db: "CV",
     collection: "Item",
   });
 
