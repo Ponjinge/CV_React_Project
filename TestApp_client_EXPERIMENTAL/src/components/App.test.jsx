@@ -120,7 +120,7 @@ test("allows you to CRUD to-do items", async () => {
     },
     { timeout: 8000 }
   );
-  // Mark the second To-Do as completed
+  // Mark the second To-Do as Selected
   const checkboxes = screen
     .getAllByTestId("todo-checkbox")
     .map((el) => el.childNodes[0]);

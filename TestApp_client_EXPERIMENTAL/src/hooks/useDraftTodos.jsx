@@ -8,7 +8,7 @@ export function useDraftTodos() {
     const draftTodo = {
       _id: createObjectId(),
       name: "",
-      isComplete: false,
+      isSelected: false,
     };
     setDrafts((d) => [...d, draftTodo]);
   };

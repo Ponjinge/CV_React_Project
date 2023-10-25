@@ -109,11 +109,11 @@ export function useTodos() {
     }
   };
 
-  // Toggle whether or not a given todo is complete
+  // Toggle whether or not a given todo is Selected
   const toggleTodo = async (todo) => {
     await todoItemCollection.updateOne(
       { _id: todo._id },
-      { $set: { isComplete: !todo.isComplete } }
+      { $set: { isSelected: !todo.isSelected } }
     );
   };
 

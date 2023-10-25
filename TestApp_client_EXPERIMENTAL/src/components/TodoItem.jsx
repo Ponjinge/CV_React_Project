@@ -17,7 +17,7 @@ export function TodoItem({ todo, todoActions }) {
           data-testid="todo-checkbox"
           edge="start"
           color="primary"
-          checked={todo.isComplete}
+          checked={todo.isSelected}
           onClick={() => {
             todoActions.toggleTodo(todo);
           }}
