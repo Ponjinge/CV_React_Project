@@ -94,7 +94,7 @@ export function useCVs() {
 
   // Given a draft CV, format it and then insert it
   const saveCV = async (draftCV, CV_element) => {
-    if (draftCV[CV_element]) {
+    if (draftCV.name) {
       draftCV.owner_id = app.currentUser.id;
       try {
         await CVItemCollection.insertOne(draftCV);
@@ -109,11 +109,11 @@ export function useCVs() {
     }
   };
 
-  // Toggle whether or not a given CV is complete
+  // Toggle whether or not a given CV is Selected
   const toggleCV = async (CV) => {
     await CVItemCollection.updateOne(
       { _id: CV._id },
-      { $set: { isComplete: !CV.isComplete } }
+      { $set: { isSelected: !CV.isSelected } }
     );
   };
 

@@ -103,7 +103,7 @@ test("allows you to CRUD CV items", async () => {
     },
     { timeout: 10000 }
   );
-  // Add a second To-Do
+  // Add a second CV element
   await user.click(screen.queryByText(/Add CV Item/i));
   await user.type(
     screen.queryByPlaceholderText("name"),
@@ -120,7 +120,7 @@ test("allows you to CRUD CV items", async () => {
     },
     { timeout: 8000 }
   );
-  // Mark the second To-Do as completed
+  // Mark the second CV element as Selectedd
   const checkboxes = screen
     .getAllByTestId("CV-checkbox")
     .map((el) => el.childNodes[0]);

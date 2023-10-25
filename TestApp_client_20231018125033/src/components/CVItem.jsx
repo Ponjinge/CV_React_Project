@@ -17,13 +17,13 @@ export function CVItem({ CV, CVActions, CV_element }) {
           data-testid="CV-checkbox"
           edge="start"
           color="primary"
-          checked={CV.isComplete}
+          checked={CV.isSelected}
           onClick={() => {
             CVActions.toggleCV(CV);
           }}
         />
       </ListItemIcon>
-      <ListItemText>{CV[CV_element]}</ListItemText>
+      <ListItemText>{CV.name}</ListItemText>
       <ListItemSecondaryAction>
         <IconButton
           data-testid="CV-delete-button"
