@@ -4,18 +4,16 @@ import { createObjectId } from "../utils";
 export function useDraftCVs() {
   const [drafts, setDrafts] = React.useState([]);
 
-
-  //Add elements here to add more possible fields to the CV form
   const createDraftCV = () => {
     const draftCV = {
       _id: createObjectId(),
       name: "",
       isSelected: false,
-    };  
+    };
     setDrafts((d) => [...d, draftCV]);
   };
-//These functions are called in DraftCVItem.jsx and have been made generic to support adding more fields to the CV form
-  const setDraftCVElement = (draft, name) => {
+
+  const setDraftCVName = (draft, name) => {
     setDrafts((oldDrafts) => {
       const idx = oldDrafts.findIndex((d) => d._id === draft._id);
       return [
@@ -26,8 +24,7 @@ export function useDraftCVs() {
     });
   };
 
-// This function may need to be modified to support adding more fields to the CV form 
-  const deleteDraftCVElement = (draft) => {
+  const deleteDraftCV = (draft) => {
     setDrafts((oldDrafts) => {
       const idx = oldDrafts.findIndex((d) => d._id === draft._id);
       return [...oldDrafts.slice(0, idx), ...oldDrafts.slice(idx + 1)];
@@ -37,7 +34,7 @@ export function useDraftCVs() {
   return {
     draftCVs: drafts,
     createDraftCV,
-    setDraftCVElement,
-    deleteDraftCVElement,
+    setDraftCVName,
+    deleteDraftCV,
   };
 }

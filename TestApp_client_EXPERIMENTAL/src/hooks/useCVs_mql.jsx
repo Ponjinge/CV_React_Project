@@ -14,22 +14,22 @@ import {
 const { dataSourceName } = atlasConfig;
 
 export function useCVs() {
-  // Set up a list of CVs in state
+  // Set up a list of cvs in state
   const app = useApp();
-  const [CVs, setCVs] = React.useState([]);
+  const [cvs, setCVs] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
 
-  // Get a client object for the CV item collection
-  const CVItemCollection = useCollection({
+  // Get a client object for the cv item collection
+  const cvItemCollection = useCollection({
     cluster: dataSourceName,
     db: "CV",
     collection: "Item",
   });
 
-  // Fetch all CV items on load and whenever our collection changes (e.g. if the current user changes)
+  // Fetch all cvs on load and whenever our collection changes (e.g. if the current user changes)
   React.useEffect(() => {
     let shouldUpdate = true;
-    const fetchCVs = CVItemCollection.find({})
+    const fetchCVs = cvItemCollection.find({})
     if (shouldUpdate) {
       fetchCVs.then((fetchedCVs) => {
         setCVs(fetchedCVs);
@@ -39,10 +39,10 @@ export function useCVs() {
     return () => {
       shouldUpdate = false;
     }
-  }, [CVItemCollection]);
+  }, [cvItemCollection]);
 
   // Use a MongoDB change stream to reactively update state when operations succeed
-  useWatch(CVItemCollection, {
+  useWatch(cvItemCollection, {
     onInsert: (change) => {
       setCVs((oldCVs) => {
         if (loading) {
@@ -92,16 +92,16 @@ export function useCVs() {
     },
   });
 
-  // Given a draft CV, format it and then insert it
-  const saveCV = async (draftCV, CV_element) => {
+  // Given a draft cv, format it and then insert it
+  const saveCV = async (draftCV) => {
     if (draftCV.name) {
       draftCV.owner_id = app.currentUser.id;
       try {
-        await CVItemCollection.insertOne(draftCV);
+        await cvItemCollection.insertOne(draftCV);
       } catch (err) {
         if (err.error.match(/^Duplicate key error/)) {
           console.warn(
-            `The following error means that this app tried to insert a CV multiple times (i.e. an existing CV has the same _id). In this app we just catch the error and move on. In your app, you might want to debounce the save input or implement an additional loading state to avoid sending the request in the first place.`
+            `The following error means that this app tried to insert a cv multiple times (i.e. an existing cv has the same _id). In this app we just catch the error and move on. In your app, you might want to debounce the save input or implement an additional loading state to avoid sending the request in the first place.`
           );
         }
         console.error(err);
@@ -109,30 +109,24 @@ export function useCVs() {
     }
   };
 
-  // Toggle whether or not a given CV is Selected
-  const toggleCV = async (CV) => {
-    await CVItemCollection.updateOne(
-      { _id: CV._id },
-      { $set: { isSelected: !CV.isSelected } }
+  // Toggle whether or not a given cv is Selected
+  const toggleCV = async (cv) => {
+    await cvItemCollection.updateOne(
+      { _id: cv._id },
+      { $set: { isSelected: !cv.isSelected } }
     );
   };
 
-  // Delete a given CV
-  const deleteCV = async (CV) => {
-    await CVItemCollection.deleteOne({ _id: CV._id });
+  // Delete a given cv
+  const deleteCV = async (cv) => {
+    await cvItemCollection.deleteOne({ _id: cv._id });
   };
 
   return {
     loading,
-    CVs,
+    cvs,
     saveCV,
     toggleCV,
     deleteCV,
   };
 }
-
-
-
-
-//Need to review this code, notably the save function which checks for Cv.name and is not applicable to every field
-
