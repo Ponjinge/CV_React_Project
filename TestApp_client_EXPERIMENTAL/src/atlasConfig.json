@@ -1,9 +1,0 @@
-{
-    "appId": "testapp-lvcay",
-    "appUrl": "https://realm.mongodb.com/groups/6523eeb17c4fc33dadf63671/apps/652fd4746301a5c6d40d8d8b",
-    "baseUrl": "https://realm.mongodb.com",
-    "clientApiBaseUrl": "https://eu-west-2.aws.realm.mongodb.com",
-    "dataApiBaseUrl": "https://eu-west-2.aws.data.mongodb-api.com",
-    "dataExplorerLink": "https://cloud.mongodb.com/links/6523eeb17c4fc33dadf63671/explorer/CvCluster/database/collection/find",
-    "dataSourceName": "mongodb-atlas"
-}
