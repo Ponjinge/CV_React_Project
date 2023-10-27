@@ -10,6 +10,8 @@ export function useDraftCVs() {
     const draftCV = {
       _id: createObjectId(),
       name: "",
+      surname: "",
+      nationality: "",
       isSelected: false,
     };  
     setDrafts((d) => [...d, draftCV]);

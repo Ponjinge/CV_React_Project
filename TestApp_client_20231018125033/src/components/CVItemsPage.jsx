@@ -5,6 +5,7 @@ import {
   Typography,
   List,
   LinearProgress,
+  Divider,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { useCVs } from "../hooks/useCVs";
@@ -14,7 +15,7 @@ import { DraftCVItem } from "./DraftCVItem";
 import { useShowLoader } from "../hooks/util-hooks";
 import { MoreInfo } from "./MoreInfo";
 import { getCVId } from "../utils";
-
+import { FormElement } from "./FormElement";
 export function CVItemsPage() {
   const { loading, CVs, ...CVActions } = useCVs();
   const { draftCVs, ...draftCVActions } = useDraftCVs();
@@ -41,7 +42,8 @@ export function CVItemsPage() {
           <Typography component="p" variant="h5">
             {`You have ${CVs.length} CV Item${CVs.length === 1 ? "" : "s"}`}
           </Typography>
-
+          <FormElement/>
+          
           <Button
             variant="contained"
             color="primary"
@@ -56,22 +58,22 @@ export function CVItemsPage() {
                 variant="contained"
                 color="primary"
                 startIcon={<AddIcon />}
-                onClick={() => handleElementSelect("name")}>
-                Name
+                onClick={() => handleElementSelect("Studies")}>
+                Studies
               </Button>
               <Button
                 variant="contained"
                 color="primary"
                 startIcon={<AddIcon />}
-                onClick={() => handleElementSelect("surname")}>
-                Surname
+                onClick={() => handleElementSelect("Research")}>
+                Research
               </Button>
               <Button
                 variant="contained"
                 color="primary"
                 startIcon={<AddIcon />}
-                onClick={() => handleElementSelect("nationality")}>
-                Nationality
+                onClick={() => handleElementSelect("Other")}>
+                Other
               </Button>
             </List>
           )}
@@ -105,6 +107,7 @@ export function CVItemsPage() {
           </List>
         </div>
       )}
+      
       <MoreInfo />
     </Container>
   );
