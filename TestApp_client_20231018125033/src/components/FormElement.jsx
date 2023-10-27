@@ -10,24 +10,24 @@ import {
 } from "@mui/material"; //Check the mui material documentation
 // for more info on these components and more components
 
-export function FormElement(type, CV) {
+export function FormElement(CV) {
   const [value, setValue] = React.useState("");
   const [error, setError] = React.useState(false);
-  const [helperTextForm, setHelperText] = React.useState(" ");
+  const [helperTextForm, setHelperTextForm] = React.useState(" ");
 
-  const handleChange = (event) => {
+  const handleChange = (event, entryText) => {
     setValue(event.target.value);
-    setHelperText(" ");
+    setHelperTextForm(entryText);
     setError(false);
   };
   const handleSubmit = (event) => {
     event.preventDefault();
     if (value === "") {
-      setHelperText("REQUIRED");
+      setHelperTextForm("REQUIRED");
       setError(true);
     } else {
-      setHelperText("AHHHHHHHH ");
-      setError(false);
+      setHelperTextForm("AHHHHHHHH ");
+      setError(false);  
     }
   };
   return (
@@ -88,7 +88,7 @@ export function FormElement(type, CV) {
             />
             <TextField
               id="outlined-required"
-              label="Adresse*"
+              label="Address*"
               defaultValue=""
               helperText={helperTextForm}
               onChange={handleChange}
@@ -108,6 +108,6 @@ export function FormElement(type, CV) {
           
 
       </form>
-    </Box>
+    </Box>        
   );
 }

@@ -42,8 +42,8 @@ export function CVItemsPage() {
           <Typography component="p" variant="h5">
             {`You have ${CVs.length} CV Item${CVs.length === 1 ? "" : "s"}`}
           </Typography>
-          <FormElement/>
-          
+          <FormElement  />
+
           <Button
             variant="contained"
             color="primary"
@@ -58,32 +58,26 @@ export function CVItemsPage() {
                 variant="contained"
                 color="primary"
                 startIcon={<AddIcon />}
-                onClick={() => handleElementSelect("Studies")}>
-                Studies
+                onClick={() => handleElementSelect("Education")& draftCVActions.createDraftCV()}>
+                Education
               </Button>
               <Button
                 variant="contained"
                 color="primary"
                 startIcon={<AddIcon />}
-                onClick={() => handleElementSelect("Research")}>
-                Research
+                onClick={() => handleElementSelect("Qualifications")& draftCVActions.createDraftCV()}>
+                Qualifications
               </Button>
               <Button
                 variant="contained"
                 color="primary"
                 startIcon={<AddIcon />}
-                onClick={() => handleElementSelect("Other")}>
+                onClick={() => handleElementSelect("Other")
+                 & draftCVActions.createDraftCV()}>
                 Other
               </Button>
             </List>
           )}
-          <Button
-            variant="contained"
-            color="primary"
-            startIcon={<AddIcon />}
-            onClick={() => draftCVActions.createDraftCV()}>
-            Add CV Item
-          </Button>
 
           <List style={{ width: "100%" }}>
             {CVs.map((CV) => (
@@ -105,9 +99,72 @@ export function CVItemsPage() {
               />
             ))}
           </List>
+          <div> 
+          <div/>
+              <Divider>Work</Divider>
+              <div/>
+            <Button
+            variant="contained"
+            color="primary"
+            startIcon={<AddIcon />}
+            onClick={() => handleButtonClick()}>
+            Choose Element
+          </Button>
+          
+          {itemSelect && ( //Replace by ItemSelectMenu when finsihed
+            <List>
+              <Button
+                variant="contained"
+                color="primary"
+                startIcon={<AddIcon />}
+                onClick={() => handleElementSelect("Experience")& draftCVActions.createDraftCV()}>
+                Experience
+              </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                startIcon={<AddIcon />}
+                onClick={() => handleElementSelect("Publications")& draftCVActions.createDraftCV()}>
+                Publications
+              </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                startIcon={<AddIcon />}
+                onClick={() => handleElementSelect("Honors/Awards")& draftCVActions.createDraftCV()}>
+                Honors/Awards
+              </Button>
+            </List>
+          )}
+
+
+          <List style={{ width: "100%" }}>
+            {CVs.map((CV) => (
+              <CVItem
+                key={getCVId(CV)}
+                CV={CV}
+                CVActions={CVActions}
+                CV_element={elementSelect} //Not sure if this is correct or whether the mapping should be modified
+              />
+            ))}
+
+            {draftCVs.map((draft) => (
+              <DraftCVItem
+                key={getCVId(draft)}
+                CV={draft}
+                CVActions={CVActions}
+                draftCVActions={draftCVActions}
+                CV_element={elementSelect} //Not sure if this is correct or whether the mapping should be modified
+              />
+            ))}
+          </List></div>
         </div>
       )}
-      
+
+      <div>
+        
+      </div>
+
       <MoreInfo />
     </Container>
   );
