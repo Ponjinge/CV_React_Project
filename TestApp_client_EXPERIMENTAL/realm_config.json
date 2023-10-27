@@ -1,8 +1,0 @@
-{
-    "app_id": "react_app-xipxv",
-    "config_version": 20210101,
-    "name": "React_app",
-    "location": "IE",
-    "provider_region": "aws-eu-west-2",
-    "deployment_model": "LOCAL"
-}
