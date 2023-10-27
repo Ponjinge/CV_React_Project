@@ -2,6 +2,7 @@ import { AppBar, Toolbar, Button, Typography } from "@mui/material";
 import { WelcomePage } from "./WelcomePage";
 import { CVItemsPage } from "./CVItemsPage";
 import { CVLoadPage } from "./CVLoadPage";
+import { CVLoadPageTest } from "./CVLoadPageTest";
 import { AppProvider, useApp } from "./RealmApp";
 import { ThemeProvider } from "./Theme";
 import { AppName } from "./AppName";
@@ -39,7 +40,7 @@ function App() {
           ) : null}
         </Toolbar>
       </AppBar>
-      {currentUser ? <CVLoadPage /> : <WelcomePage />}
+      {currentUser ? <CVItemsPage /> : <WelcomePage />}
     </div>
   );
 }
