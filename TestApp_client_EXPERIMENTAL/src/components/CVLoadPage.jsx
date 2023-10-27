@@ -67,7 +67,7 @@ export function CVLoadPage() {
       <div ref={componentRef} style={{ width: "210mm", height: "297mm" }}>
         {cvData && (
           <div>
-            <h1>CV {cvData["Personal Information"]["name"]}</h1>
+            <h1>CV {cvData["Personal Information"]["surname"]}</h1>
             <h2>Informations Personnelles</h2>
             <ul>
               <li>Nom : {cvData["Personal Information"]["name"]}</li>
@@ -85,7 +85,6 @@ export function CVLoadPage() {
               qualification["Date"] && (
                 <ul key={index}>
                   <li>Date: {qualification["Date"]}</li>
-                  {/* Le reste de vos éléments d'affichage pour les qualifications */}
                 </ul>
               )
             ))}
@@ -155,7 +154,7 @@ export function CVLoadPage() {
             )}
             {publicationsData && publicationsData.length > 2 && (
               <button onClick={togglePublications}>
-                {showPublications ? "Masquer Publications" : "Afficher Toutes les Publications"}
+                {showPublications ? "Masquer Publications" : "Afficher toutes les publications"}
               </button>
             )}
             <a
@@ -163,7 +162,7 @@ export function CVLoadPage() {
               className="hide-in-pdf"
               style={{ display: "none" }}
               href="/citations.csv"
-              download={`CV_${cvData["Personal Information"]["name"]}.csv`}
+              download={`CV_${cvData["Personal Information"]["surname"]}.csv`}
             ></a>
           </div>
         )}
