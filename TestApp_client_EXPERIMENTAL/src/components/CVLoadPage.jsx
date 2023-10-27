@@ -85,6 +85,7 @@ export function CVLoadPage() {
               qualification["Date"] && (
                 <ul key={index}>
                   <li>Date: {qualification["Date"]}</li>
+
                 </ul>
               )
             ))}
