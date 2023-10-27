@@ -1,19 +1,9 @@
 import React from "react";
 import {
-    Checkbox,
-    IconButton,
-    ListItem,
-    ListItemIcon,
-    ListItemSecondaryAction,
-    ListItemText,
-    Select,
-    MenuItem,
-    SelectChangeEvent ,
     Button,
     List,
     } from "@mui/material"; //Check the mui material documentation
     // for more info on these components and more components 
-import { CVItem } from "./CVItem";
 
 
 

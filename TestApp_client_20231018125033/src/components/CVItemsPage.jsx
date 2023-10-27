@@ -5,6 +5,7 @@ import {
   Typography,
   List,
   LinearProgress,
+  Divider,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { useCVs } from "../hooks/useCVs";
@@ -14,7 +15,7 @@ import { DraftCVItem } from "./DraftCVItem";
 import { useShowLoader } from "../hooks/util-hooks";
 import { MoreInfo } from "./MoreInfo";
 import { getCVId } from "../utils";
-
+import { FormElement } from "./FormElement";
 export function CVItemsPage() {
   const { loading, CVs, ...CVActions } = useCVs();
   const { draftCVs, ...draftCVActions } = useDraftCVs();
@@ -41,6 +42,7 @@ export function CVItemsPage() {
           <Typography component="p" variant="h5">
             {`You have ${CVs.length} CV Item${CVs.length === 1 ? "" : "s"}`}
           </Typography>
+          <FormElement  />
 
           <Button
             variant="contained"
@@ -56,32 +58,26 @@ export function CVItemsPage() {
                 variant="contained"
                 color="primary"
                 startIcon={<AddIcon />}
-                onClick={() => handleElementSelect("name")}>
-                Name
+                onClick={() => handleElementSelect("Education")& draftCVActions.createDraftCV()}>
+                Education
               </Button>
               <Button
                 variant="contained"
                 color="primary"
                 startIcon={<AddIcon />}
-                onClick={() => handleElementSelect("surname")}>
-                Surname
+                onClick={() => handleElementSelect("Qualifications")& draftCVActions.createDraftCV()}>
+                Qualifications
               </Button>
               <Button
                 variant="contained"
                 color="primary"
                 startIcon={<AddIcon />}
-                onClick={() => handleElementSelect("nationality")}>
-                Nationality
+                onClick={() => handleElementSelect("Other")
+                 & draftCVActions.createDraftCV()}>
+                Other
               </Button>
             </List>
           )}
-          <Button
-            variant="contained"
-            color="primary"
-            startIcon={<AddIcon />}
-            onClick={() => draftCVActions.createDraftCV()}>
-            Add CV Item
-          </Button>
 
           <List style={{ width: "100%" }}>
             {CVs.map((CV) => (
@@ -103,8 +99,72 @@ export function CVItemsPage() {
               />
             ))}
           </List>
+          <div> 
+          <div/>
+              <Divider>Work</Divider>
+              <div/>
+            <Button
+            variant="contained"
+            color="primary"
+            startIcon={<AddIcon />}
+            onClick={() => handleButtonClick()}>
+            Choose Element
+          </Button>
+          
+          {itemSelect && ( //Replace by ItemSelectMenu when finsihed
+            <List>
+              <Button
+                variant="contained"
+                color="primary"
+                startIcon={<AddIcon />}
+                onClick={() => handleElementSelect("Experience")& draftCVActions.createDraftCV()}>
+                Experience
+              </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                startIcon={<AddIcon />}
+                onClick={() => handleElementSelect("Publications")& draftCVActions.createDraftCV()}>
+                Publications
+              </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                startIcon={<AddIcon />}
+                onClick={() => handleElementSelect("Honors/Awards")& draftCVActions.createDraftCV()}>
+                Honors/Awards
+              </Button>
+            </List>
+          )}
+
+
+          <List style={{ width: "100%" }}>
+            {CVs.map((CV) => (
+              <CVItem
+                key={getCVId(CV)}
+                CV={CV}
+                CVActions={CVActions}
+                CV_element={elementSelect} //Not sure if this is correct or whether the mapping should be modified
+              />
+            ))}
+
+            {draftCVs.map((draft) => (
+              <DraftCVItem
+                key={getCVId(draft)}
+                CV={draft}
+                CVActions={CVActions}
+                draftCVActions={draftCVActions}
+                CV_element={elementSelect} //Not sure if this is correct or whether the mapping should be modified
+              />
+            ))}
+          </List></div>
         </div>
       )}
+
+      <div>
+        
+      </div>
+
       <MoreInfo />
     </Container>
   );
