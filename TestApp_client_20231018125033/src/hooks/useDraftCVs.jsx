@@ -9,8 +9,13 @@ export function useDraftCVs() {
   const createDraftCV = () => {
     const draftCV = {
       _id: createObjectId(),
-      name: "",
-
+      first_name: "",
+      last_name: "",
+      nationality: "",
+      date_of_birth: "",
+      email : "",
+      phone_number : "",
+      address : "",
       isSelected: false,
     };  
     setDrafts((d) => [...d, draftCV]);
