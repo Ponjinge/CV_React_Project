@@ -3,6 +3,7 @@ import { WelcomePage } from "./WelcomePage";
 import {FormElement} from "./FormElement";
 import { CVItemsPage } from "./CVItemsPage";
 import { CVLoadPage } from "./CVLoadPage";
+import { CVLoadPageTest } from "./CVLoadPageTest";
 import { AppProvider, useApp } from "./RealmApp";
 import { ThemeProvider } from "./Theme";
 import { AppName } from "./AppName";
@@ -45,7 +46,7 @@ function App() {
       {/* If a user is signed in, load the CV Item Page. Else load the sign up/log in page */}
       {/* We can add another conditional statement here to render the CV visualizer here*/}
       {/* or add a button on the CV Composition page  */}
-      {currentUser ? <CVLoadPage /> : <WelcomePage />}
+      {currentUser ? <CVLoadPageTest /> : <WelcomePage />}
     </div>
   );
 }

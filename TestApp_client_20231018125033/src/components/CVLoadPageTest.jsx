@@ -45,22 +45,26 @@ export function CVLoadPageTest() {
   useEffect(() => {
     const fetchDataFromDatabase = async () => {
       const app = new App(realmConfig.appId);
-    
+
       try {
+        // Connexion avec les informations d'identification appropriées (par exemple, e-mail/mot de passe)
         const credentials = Credentials.emailPassword("tristan.rebeyrol@gmail.com", "oui123");
         const user = await app.logIn(credentials);
-    
+
+        // Obtention de l'ID de l'utilisateur connecté
         const userId = user.id;
-    
+
+        // Connexion à la base de données MongoDB avec le client Mongo
         const mongodb = app.currentUser.mongoClient("mongodb-atlas");
-        const cvDataCollection = mongodb.db("CvCluster").collection("CV/cvdb/CVs");
-        const data = await cvDataCollection.find({});
+        const cvDataCollection = mongodb.db("cvdb").collection("CVs");
+
+        // Requête pour récupérer les données
+        const data = await cvDataCollection.find({}).toArray();
         setCvData(data);
       } catch (error) {
         console.error('Erreur lors de la récupération des données :', error);
       }
     };
-    
 
     fetchDataFromDatabase();
     readCSV();
@@ -70,7 +74,7 @@ export function CVLoadPageTest() {
     setShowPublications(!showPublications);
   };
 
-  console.log(cvData);
+  //console.log(cvData);
   return (
     <div>
       <button onClick={handlePrint}>Télécharger</button>
@@ -81,7 +85,7 @@ export function CVLoadPageTest() {
             <h2>Informations Personnelles</h2>
             <ul>
               <li>Nom : {cvData["Personal Information"]["name"]}</li>
-              <li>Prénom : {cvData["Personal Information"]["surname"]}</li>
+              <li>Prénom : {cvData["Personal Information"][""]}</li>
               <li>Date de Naissance : {cvData["Personal Information"]["dateBirth"]}</li>
               <li>Mail : {cvData["Personal Information"]["Mail"]}</li>
               <li>Téléphone : {cvData["Personal Information"]["Telephone"]}</li>
