@@ -10,6 +10,10 @@ import {
 import ClearIcon from "@mui/icons-material/Clear";
 
 export function CVItem({ CV, CVActions, CV_element }) {
+  
+  
+ 
+  
   return (
     <ListItem>
       <ListItemIcon>
@@ -23,7 +27,8 @@ export function CVItem({ CV, CVActions, CV_element }) {
           }}
         />
       </ListItemIcon>
-      <ListItemText>{CV.name}</ListItemText>
+      {/* We can change CV.name to CV["name"], also we can make this function generic without crashing the code */}
+      <ListItemText>{CV[CV_element]}</ListItemText>
       <ListItemSecondaryAction>
         <IconButton
           data-testid="CV-delete-button"

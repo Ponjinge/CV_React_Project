@@ -30,19 +30,21 @@ export function DraftCVItem({ CV, CVActions, draftCVActions, CV_element }) {
           style={{ width: "100%" }}
           placeholder={CV_element}
           size="small"
-          value={CV.name}
+          value={CV[CV_element]}
           onChange={(e) => {
-            draftCVActions.setDraftCVElement(CV, e.target.value);
+            draftCVActions.setDraftCVElement(CV, CV_element, e.target.value);
+            console.log("CV: "+ CV);
+            console.log("CV_element:"+ CV_element);
+            console.log(e.target);
           }}
         />
-        
       </ListItemText>
       <ListItemSecondaryAction>
         <Button
           variant="outlined"
           size="small"
           onClick={async () => {
-            await CVActions.saveCV(CV);
+            await CVActions.saveCV(CV, CV_element);
             draftCVActions.deleteDraftCVElement(CV);
           }}
         >
