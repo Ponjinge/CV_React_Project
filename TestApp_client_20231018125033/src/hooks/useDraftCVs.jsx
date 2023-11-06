@@ -9,19 +9,24 @@ export function useDraftCVs() {
   const createDraftCV = () => {
     const draftCV = {
       _id: createObjectId(),
-      name: "",
-
+      first_name: "",
+      last_name: "",
+      nationality: "",
+      date_of_birth: "",
+      email : "",
+      phone_number : "",
+      address : "",
       isSelected: false,
     };  
     setDrafts((d) => [...d, draftCV]);
   };
 //These functions are called in DraftCVItem.jsx and have been made generic to support adding more fields to the CV form
-  const setDraftCVElement = (draft, name) => {
+  const setDraftCVElement = (draft, name, value) => {
     setDrafts((oldDrafts) => {
       const idx = oldDrafts.findIndex((d) => d._id === draft._id);
       return [
         ...oldDrafts.slice(0, idx),
-        { ...oldDrafts[idx], name },
+        { ...oldDrafts[idx], [name]:value },
         ...oldDrafts.slice(idx + 1),
       ];
     });
