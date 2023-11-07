@@ -93,11 +93,13 @@ export function useCVs() {
   });
 
   // Given a draft CV, format it and then insert it
-  const saveCV = async (draftCV, CV_element) => {
+  const saveCV = async (draftCV, CV_element ) => {
     
     if (draftCV[CV_element]) {
       draftCV.owner_id = app.currentUser.id;
       try {
+        //Needs to be modified to insert into the same CV rather than creating a new one
+        
         await CVItemCollection.insertOne(draftCV);
       } catch (err) {
         if (err.error.match(/^Duplicate key error/)) {

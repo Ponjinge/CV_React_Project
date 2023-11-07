@@ -11,7 +11,10 @@ import ClearIcon from "@mui/icons-material/Clear";
 
 export function CVItem({ CV, CVActions, CV_element }) {
   
-  
+  const [chosenElement, setChosenElement] = React.useState(CV_element);
+  const handleElementSelect = (CV_element) => {
+    setChosenElement(CV_element);
+  };
  
   
   return (
@@ -28,7 +31,7 @@ export function CVItem({ CV, CVActions, CV_element }) {
         />
       </ListItemIcon>
       {/* We can change CV.name to CV["name"], also we can make this function generic without crashing the code */}
-      <ListItemText>{CV[CV_element]}</ListItemText>
+      <ListItemText>{CV[chosenElement]}</ListItemText>
       <ListItemSecondaryAction>
         <IconButton
           data-testid="CV-delete-button"

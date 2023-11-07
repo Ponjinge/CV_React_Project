@@ -21,12 +21,12 @@ export function useDraftCVs() {
     setDrafts((d) => [...d, draftCV]);
   };
 //These functions are called in DraftCVItem.jsx and have been made generic to support adding more fields to the CV form
-  const setDraftCVElement = (draft, name, value) => {
+  const setDraftCVElement = (draft, CV_element, value) => {
     setDrafts((oldDrafts) => {
       const idx = oldDrafts.findIndex((d) => d._id === draft._id);
       return [
         ...oldDrafts.slice(0, idx),
-        { ...oldDrafts[idx], [name]:value },
+        { ...oldDrafts[idx], [CV_element]:value },
         ...oldDrafts.slice(idx + 1),
       ];
     });
