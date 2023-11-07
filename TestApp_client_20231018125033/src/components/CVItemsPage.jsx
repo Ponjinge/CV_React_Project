@@ -58,15 +58,15 @@ export function CVItemsPage() {
                 variant="contained"
                 color="primary"
                 startIcon={<AddIcon />}
-                onClick={() => handleElementSelect("Education")& draftCVActions.createDraftCV()}>
-                Education
+                onClick={() => handleElementSelect("name")& draftCVActions.createDraftCV()}>
+                name
               </Button>
               <Button
                 variant="contained"
                 color="primary"
                 startIcon={<AddIcon />}
-                onClick={() => handleElementSelect("Qualifications")& draftCVActions.createDraftCV()}>
-                Qualifications
+                onClick={() => handleElementSelect("nationality")& draftCVActions.createDraftCV()}>
+                nationality
               </Button>
               <Button
                 variant="contained"

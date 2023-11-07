@@ -94,7 +94,8 @@ export function useCVs() {
 
   // Given a draft CV, format it and then insert it
   const saveCV = async (draftCV, CV_element) => {
-    if (draftCV.name) {
+    
+    if (draftCV[CV_element]) {
       draftCV.owner_id = app.currentUser.id;
       try {
         await CVItemCollection.insertOne(draftCV);
