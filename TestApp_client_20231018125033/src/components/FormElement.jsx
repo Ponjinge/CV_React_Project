@@ -1,4 +1,5 @@
 import React from "react";
+import { FormTextField } from "./FormTextField";
 import {
   FormControl,
   FormLabel,
@@ -10,11 +11,11 @@ import {
 } from "@mui/material"; //Check the mui material documentation
 // for more info on these components and more components
 
-export function FormElement(CV) {
+export function FormElement({CV, CVActions, draftCVActions, CV_element}) {
   const [value, setValue] = React.useState("");
   const [error, setError] = React.useState(false);
   const [helperTextForm, setHelperTextForm] = React.useState(" ");
-
+  const formElementList = ["first_name", "last_name","nationality", "date_of_birth", "email", "phone_number", "address"];
   const handleChange = (event, entryText) => {
     setValue(event.target.value);
     setHelperTextForm(entryText);
@@ -27,7 +28,7 @@ export function FormElement(CV) {
       setError(true);
     } else {
       setHelperTextForm("AHHHHHHHH ");
-      setError(false);  
+      setError(false);
     }
   };
   return (
@@ -41,73 +42,39 @@ export function FormElement(CV) {
           <FormLabel id="cv-entry">Enter your CV information</FormLabel>
           <div>
             <Divider>Personal Info </Divider>
-            <TextField
-              id="outlined-required"
-              label="First Name*"
-              value={CV.name}
-              helperText={helperTextForm}
-              onChange={handleChange}
-            />
 
-            <TextField
-              id="outlined-required"
-              label="Last Name*"
-              defaultValue=""
-              helperText={helperTextForm}
-              onChange={handleChange}
-            />
-          </div>
-          <div>
-            <TextField
-              id="outlined-required"
-              label="Nationality*"
-              defaultValue=""
-              helperText={helperTextForm}
-              onChange={handleChange}
-            />
-            <TextField
-              id="outlined-required"
-              label="Date of Birth*"
-              defaultValue=""
-              helperText={helperTextForm}
-              onChange={handleChange}
-            />
-            <TextField
-              id="outlined-required"
-              label="Mail*"
-              defaultValue=""
-              helperText={helperTextForm}
-              onChange={handleChange}
-            />
-            <TextField
-              id="outlined-required"
-              label="Tel*"
-              defaultValue=""
-              helperText={helperTextForm}
-              onChange={handleChange}
-            />
-            <TextField
-              id="outlined-required"
-              label="Address*"
-              defaultValue=""
-              helperText={helperTextForm}
-              onChange={handleChange}
-            />
-
-
+           {formElementList.map((formElement) => (
+              <FormTextField
+                key={formElement}
+                CV={CV}
+                CVActions={CVActions}
+                draftCVActions={draftCVActions}
+                CV_element={formElement} //Not sure if this is correct or whether the mapping should be modified
+              />
+            ))}   
+          
           </div>
 
-          <Button sx={{ mt: 1, mr: 1 }} type="submit" variant="outlined">
+          {/* <Button sx={{ mt: 1, mr: 1 }} type="submit" variant="outlined">
             {" "}
             Submit
+          </Button> */}
+          
+          <Button
+            variant="outlined"
+            size="small"
+            onClick={async () => {
+              await CVActions.saveCV(CV, "first_name");
+              //await CVActions.saveCV(CV, "last_name");
+              draftCVActions.deleteDraftCVElement(CV);
+            }}>
+            SUBMIT{" "}
           </Button>
 
           <FormHelperText>{helperTextForm}</FormHelperText>
           <Divider>Academic Info </Divider>
-          </FormControl>
-          
-
+        </FormControl>
       </form>
-    </Box>        
+    </Box>
   );
 }
