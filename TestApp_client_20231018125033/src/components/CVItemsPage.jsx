@@ -49,7 +49,7 @@ export function CVItemsPage() {
               CV={draft}
               CVActions={CVActions}
               draftCVActions={draftCVActions}
-              CV_element={elementSelect}
+              CV_element_list= {["first_name", "last_name","nationality", "date_of_birth", "email", "phone_number", "address"]}
             />
           ))}
 

@@ -11,16 +11,16 @@ import {
 } from "@mui/material"; //Check the mui material documentation
 // for more info on these components and more components
 
-export function FormElement({CV, CVActions, draftCVActions, CV_element}) {
-  const [value, setValue] = React.useState("");
+export function FormElement({CV, CVActions, draftCVActions, CV_element_list}) {
   const [error, setError] = React.useState(false);
-  const [helperTextForm, setHelperTextForm] = React.useState(" ");
-  const formElementList = ["first_name", "last_name","nationality", "date_of_birth", "email", "phone_number", "address"];
+  const [value, setValue] = React.useState("");
+  const formElementList = {CV_element_list};
   const handleChange = (event, entryText) => {
     setValue(event.target.value);
     setHelperTextForm(entryText);
     setError(false);
   };
+  const [helperTextForm, setHelperTextForm] = React.useState(" ");
   const handleSubmit = (event) => {
     event.preventDefault();
     if (value === "") {
@@ -43,7 +43,7 @@ export function FormElement({CV, CVActions, draftCVActions, CV_element}) {
           <div>
             <Divider>Personal Info </Divider>
 
-           {formElementList.map((formElement) => (
+           {CV_element_list.map((formElement) => (
               <FormTextField
                 key={formElement}
                 CV={CV}

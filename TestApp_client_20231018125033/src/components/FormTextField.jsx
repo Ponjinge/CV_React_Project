@@ -1,5 +1,5 @@
 import React from "react";
-import { TextField, Button } from "@mui/material";
+import { TextField } from "@mui/material";
 
 export function FormTextField({ CV, draftCVActions, CV_element }) {
   const [conditionsMet, setConditionsMet] = React.useState(true); //Switch to true
