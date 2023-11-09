@@ -1,96 +1,158 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useCVs } from "../hooks/useCVs";
+import Papa from "papaparse";
 
 export function CVLoadPageTest() {
   const { CVs } = useCVs();
+  const [publicationsData, setPublicationsData] = useState([]);
+  const [showPublications, setShowPublications] = useState(false);
+
+  useEffect(() => {
+    readCSV();
+  }, []);
 
   const isNotEmpty = (value) => {
     return value !== null && value !== undefined && value !== "";
   };
 
-  const generateListItems = (cv, category) => {
-    if (cv[category] && typeof cv[category] === 'object') {
-      return Object.keys(cv[category]).map((key) => {
-        const value = cv[category][key];
-        if (isNotEmpty(value)) {
-          return (
-            <li key={key}>
-               {value}
-            </li>
-          );
-        }
-        return null;
-      });
+  const renderListItem = (cv, category, isSelected = true) => {
+    if (isSelected) {
+      return (
+        <>
+          <h2>{category}</h2>
+          {generateListItems(cv, category)}
+        </>
+      );
     }
     return null;
   };
   
+  /*
+  const renderListItem = (cv, category) => {
+  const isSelected = cv[category][0]["isSelected"];
+
+  if (isSelected) {
+    return (
+      <>
+        <h2>{category}</h2>
+        {generateListItems(cv, category)}
+      </>
+    );
+  }
+  return null;
+};
+*/
+
+  const generateListItems = (cv, category) => {
+    if (cv[category]) {
+      if (Array.isArray(cv[category])) {
+        const filteredList = cv[category].filter((item) => {
+          if (typeof item === 'object' && !Array.isArray(item)) {
+            return Object.values(item).some((value) => isNotEmpty(value));
+          }
+          return isNotEmpty(item);
+        });
+
+        return (
+          <ul style={{ listStyleType: 'none', paddingLeft: '20px' }}>
+            {filteredList.map((item, index) => (
+              <li key={index} style={{ marginBottom: '10px' }}>
+                {Object.entries(item).map(([key, value]) => (
+                  <div key={key}>
+                    {`${key}: ${typeof value === 'object' ? JSON.stringify(value) : value}`}
+                  </div>
+                ))}
+              </li>
+            ))}
+          </ul>
+        );
+      } else if (typeof cv[category] === 'object') {
+        const filteredObject = Object.fromEntries(
+          Object.entries(cv[category]).filter(([key, value]) => isNotEmpty(value))
+        );
+
+        return (
+          <ul style={{ listStyleType: 'none', paddingLeft: '20px' }}>
+            {Object.keys(filteredObject).map((key) => (
+              <li key={key} style={{ marginBottom: '10px' }}>
+                {filteredObject[key]}
+              </li>
+            ))}
+          </ul>
+        );
+      }
+    }
+    return null;
+  };
+
+  const readCSV = () => {
+    Papa.parse("/citations.csv", {
+      download: true,
+      header: true,
+      complete: (result) => {
+        setPublicationsData(result.data);
+      },
+      dynamicTyping: true,
+    });
+  };
 
   return (
     <div>
-      <h2>Liste des CVs</h2>
-      <ul>
-        {CVs.map((cv) => (
-          <li key={cv._id}>
-            
+      {CVs.map((cv) => (
+        <div key={cv._id}>
+          <h2>{`${cv["Personal Information"]["name"]} ${cv["Personal Information"]["surname"]}`}</h2>
 
-            <h2>Informations Personnelles</h2>
-            <ul>
-              {generateListItems(cv, "Personal Information")}
-            </ul>
+          {renderListItem(cv, "Personal Information", cv["Personal Information"]["isSelected"])}
 
-            <h2>Qualifications</h2>
-            {cv["Qualifications"] && cv["Qualifications"].map((qualification, index) => (
-              <ul key={index}>
-                {generateListItems(qualification, "Qualification")}
-              </ul>
-            ))}
+          {renderListItem(cv, "Qualifications", cv["Qualifications"][0]["isSelected"])}
 
-            <h2>Education</h2>
-            {cv["Education"] && cv["Education"].map((education, index) => (
-              <ul key={index}>
-                {generateListItems(education, "Education")}
-                <h3>Supervisors</h3>
-                <ul>
-                  {education["Supervisor"] && education["Supervisor"].map((supervisor, sIndex) => (
-                    <ul key={sIndex}>
-                      {generateListItems(supervisor, "Supervisor")}
-                    </ul>
+          {renderListItem(cv, "Education", cv["Education"][0]["isSelected"])}
+
+          {renderListItem(cv, "Experience", cv["Experience"][0]["isSelected"])}
+
+          {renderListItem(cv, "Publications", cv["Publications"][0]["isSelected"]) && (
+            <div>
+              <h2>Publications</h2>
+              {publicationsData.length > 0 && (
+                <table style={{ width: "100%" }}>
+                <thead>
+                  <tr>
+                    <th style={{ width: "10%" }}>Auteurs</th>
+                    <th style={{ width: "10%" }}>Titre</th>
+                    <th style={{ width: "10%" }}>Publication</th>
+                    <th style={{ width: "10%" }}>Volume</th>
+                    <th style={{ width: "10%" }}>Nombre</th>
+                    <th style={{ width: "10%" }}>Page</th>
+                    <th style={{ width: "10%" }}>Année</th>
+                    <th style={{ width: "20%" }}>Editeur</th>
+                  </tr>
+                </thead>
+                  <tbody>
+                  {publicationsData.map((publication, index) => (
+                    <tr key={index}>
+                      <td>{isNotEmpty(publication["Authors"]) && publication["Authors"]}</td>
+                      <td>{isNotEmpty(publication["Title"]) && publication["Title"]}</td>
+                      <td>{isNotEmpty(publication["Publication"]) && publication["Publication"]}</td>
+                      <td>{isNotEmpty(publication["Volume"]) ? publication["Volume"] : ""}</td>
+                      <td>{isNotEmpty(publication["Number"]) ? publication["Number"] : ""}</td>
+                      <td>{isNotEmpty(publication["Pages"]) ? publication["Pages"] : ""}</td>
+                      <td>{isNotEmpty(publication["Year"]) ? publication["Year"] : ""}</td>
+                      <td>{isNotEmpty(publication["Publisher"]) ? publication["Publisher"] : ""}</td>
+                    </tr>
                   ))}
-                </ul>
-              </ul>
-            ))}
 
-            <h2>Experience</h2>
-            {cv["Experience"] && cv["Experience"].map((experience, index) => (
-              <ul key={index}>
-                {generateListItems(experience, "Experience")}
-              </ul>
-            ))}
 
-            <h2>Publications</h2>
-            {cv["Publications"] && cv["Publications"].map((publication, index) => (
-              <ul key={index}>
-                {generateListItems(publication, "Publication")}
-              </ul>
-            ))}
+                  </tbody>
+                </table>
+              )}
+            </div>
+          )}
 
-            <h2>Professional Affiliations</h2>
-            {cv["Professional Affiliations"] && cv["Professional Affiliations"].map((affiliation, index) => (
-              <ul key={index}>
-                {generateListItems(affiliation, "Professional Affiliation")}
-              </ul>
-            ))}
+          {renderListItem(cv, "Professional Affiliations", cv["Professional Affiliations"][0]["isSelected"])}
 
-            <h2>Honors/Awards/Grants</h2>
-            {cv["Honors/Awards/Grants"] && cv["Honors/Awards/Grants"].map((award, index) => (
-              <ul key={index}>
-                {generateListItems(award, "Award")}
-              </ul>
-            ))}
-          </li>
-        ))}
-      </ul>
+          {renderListItem(cv, "Honors/Awards/Grants", cv["Honors/Awards/Grants"][0]["isSelected"])}
+        </div>
+      ))}
     </div>
   );
 }
