@@ -12,14 +12,10 @@ import {
 // for more info on these components and more components
 
 export function FormElement({CV, CVActions, draftCVActions, CV_element_list}) {
+  
+ 
   const [error, setError] = React.useState(false);
   const [value, setValue] = React.useState("");
-  const formElementList = {CV_element_list};
-  const handleChange = (event, entryText) => {
-    setValue(event.target.value);
-    setHelperTextForm(entryText);
-    setError(false);
-  };
   const [helperTextForm, setHelperTextForm] = React.useState(" ");
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -42,17 +38,16 @@ export function FormElement({CV, CVActions, draftCVActions, CV_element_list}) {
           <FormLabel id="cv-entry">Enter your CV information</FormLabel>
           <div>
             <Divider>Personal Info </Divider>
-
-           {CV_element_list.map((formElement) => (
+           
+            {CV_element_list.map((formElement) => (
               <FormTextField
                 key={formElement}
                 CV={CV}
                 CVActions={CVActions}
                 draftCVActions={draftCVActions}
-                CV_element={formElement} //Not sure if this is correct or whether the mapping should be modified
+                CV_element={formElement}
               />
-            ))}   
-          
+            ))}
           </div>
 
           {/* <Button sx={{ mt: 1, mr: 1 }} type="submit" variant="outlined">
@@ -64,9 +59,11 @@ export function FormElement({CV, CVActions, draftCVActions, CV_element_list}) {
             variant="outlined"
             size="small"
             onClick={async () => {
+              
               await CVActions.saveCV(CV, "first_name");
               //await CVActions.saveCV(CV, "last_name");
               draftCVActions.deleteDraftCVElement(CV);
+              
             }}>
             SUBMIT{" "}
           </Button>

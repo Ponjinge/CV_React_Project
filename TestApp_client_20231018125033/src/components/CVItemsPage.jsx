@@ -30,7 +30,26 @@ export function CVItemsPage() {
   const handleElementSelect = (CV_element) => {
     setElementSelect(CV_element);
   };
- 
+
+  // const [basicInfoExists, setBasicInfoExists] = React.useState(false);
+  // const handleBasicInfoExists = () => {
+  //   setBasicInfoExists(true);
+  // };
+
+   const [formRender, setFormRender] = React.useState(false);
+   const handleFormRender = () => {
+     setFormRender(true);
+   };
+
+  // React.useEffect(() => {
+  //   const hasBasicInfo = CVs.some((CV) => CV.first_name !== "");
+  //   if (hasBasicInfo) {
+  //     handleBasicInfoExists();
+  //   } else {
+  //     console.log("Basic info does not exist");
+  //   }
+  // }, [CVs, handleBasicInfoExists]);
+
   return (
     <Container className="main-container" maxWidth="sm">
       {loading ? (
@@ -43,15 +62,33 @@ export function CVItemsPage() {
             {`You have ${CVs.length} CV Item${CVs.length === 1 ? "" : "s"}`}
           </Typography>
 
-          {draftCVs.map((draft) => (
+          {/* {!basicInfoExists && ( */}
+            <Button
+              onClick={() =>
+                draftCVActions.createDraftCV() &
+                handleFormRender() 
+                // setBasicInfoExists(true)
+              }>
+              Generate Basic Info{" "}
+            </Button>
+          {/* )}  */}
+          {formRender && ( 
             <FormElement
-              key={getCVId(draft)}
-              CV={draft}
+              key={getCVId(draftCVs[0])}
+              CV={draftCVs[0]}
               CVActions={CVActions}
               draftCVActions={draftCVActions}
-              CV_element_list= {["first_name", "last_name","nationality", "date_of_birth", "email", "phone_number", "address"]}
+              CV_element_list={[
+                "first_name",
+                "last_name",
+                "nationality",
+                "date_of_birth",
+                "email",
+                "phone_number",
+                "address",
+              ]}
             />
-          ))}
+         )} 
 
           <Button
             variant="contained"
@@ -103,6 +140,8 @@ export function CVItemsPage() {
                 CV_element={elementSelect} //Not sure if this is correct or whether the mapping should be modified
               />
             ))}
+
+           
 
             {draftCVs.map((draft) => (
               <DraftCVItem
