@@ -31,6 +31,25 @@ export function CVItemsPage() {
     setElementSelect(CV_element);
   };
 
+  // const [basicInfoExists, setBasicInfoExists] = React.useState(false);
+  // const handleBasicInfoExists = () => {
+  //   setBasicInfoExists(true);
+  // };
+
+   const [formRender, setFormRender] = React.useState(false);
+   const handleFormRender = () => {
+     setFormRender(true);
+   };
+
+  // React.useEffect(() => {
+  //   const hasBasicInfo = CVs.some((CV) => CV.first_name !== "");
+  //   if (hasBasicInfo) {
+  //     handleBasicInfoExists();
+  //   } else {
+  //     console.log("Basic info does not exist");
+  //   }
+  // }, [CVs, handleBasicInfoExists]);
+
   return (
     <Container className="main-container" maxWidth="sm">
       {loading ? (
@@ -42,7 +61,34 @@ export function CVItemsPage() {
           <Typography component="p" variant="h5">
             {`You have ${CVs.length} CV Item${CVs.length === 1 ? "" : "s"}`}
           </Typography>
-          <FormElement  />
+
+          {/* {!basicInfoExists && ( */}
+            <Button
+              onClick={() =>
+                draftCVActions.createDraftCV() &
+                handleFormRender() 
+                // setBasicInfoExists(true)
+              }>
+              Generate Basic Info{" "}
+            </Button>
+          {/* )}  */}
+          {formRender && ( 
+            <FormElement
+              key={getCVId(draftCVs[0])}
+              CV={draftCVs[0]}
+              CVActions={CVActions}
+              draftCVActions={draftCVActions}
+              CV_element_list={[
+                "first_name",
+                "last_name",
+                "nationality",
+                "date_of_birth",
+                "email",
+                "phone_number",
+                "address",
+              ]}
+            />
+         )} 
 
           <Button
             variant="contained"
@@ -58,22 +104,28 @@ export function CVItemsPage() {
                 variant="contained"
                 color="primary"
                 startIcon={<AddIcon />}
-                onClick={() => handleElementSelect("name")& draftCVActions.createDraftCV()}>
+                onClick={() =>
+                  handleElementSelect("name") & draftCVActions.createDraftCV()
+                }>
                 name
               </Button>
               <Button
                 variant="contained"
                 color="primary"
                 startIcon={<AddIcon />}
-                onClick={() => handleElementSelect("nationality")& draftCVActions.createDraftCV()}>
+                onClick={() =>
+                  handleElementSelect("nationality") &
+                  draftCVActions.createDraftCV()
+                }>
                 nationality
               </Button>
               <Button
                 variant="contained"
                 color="primary"
                 startIcon={<AddIcon />}
-                onClick={() => handleElementSelect("Other")
-                 & draftCVActions.createDraftCV()}>
+                onClick={() =>
+                  handleElementSelect("Other") & draftCVActions.createDraftCV()
+                }>
                 Other
               </Button>
             </List>
@@ -89,6 +141,8 @@ export function CVItemsPage() {
               />
             ))}
 
+           
+
             {draftCVs.map((draft) => (
               <DraftCVItem
                 key={getCVId(draft)}
@@ -99,71 +153,78 @@ export function CVItemsPage() {
               />
             ))}
           </List>
-          <div> 
-          <div/>
-              <Divider>Work</Divider>
-              <div/>
+          <div>
+            <div />
+            <Divider>Work</Divider>
+            <div />
             <Button
-            variant="contained"
-            color="primary"
-            startIcon={<AddIcon />}
-            onClick={() => handleButtonClick()}>
-            Choose Element
-          </Button>
-          
-          {itemSelect && ( //Replace by ItemSelectMenu when finsihed
-            <List>
-              <Button
-                variant="contained"
-                color="primary"
-                startIcon={<AddIcon />}
-                onClick={() => handleElementSelect("Experience")& draftCVActions.createDraftCV()}>
-                Experience
-              </Button>
-              <Button
-                variant="contained"
-                color="primary"
-                startIcon={<AddIcon />}
-                onClick={() => handleElementSelect("Publications")& draftCVActions.createDraftCV()}>
-                Publications
-              </Button>
-              <Button
-                variant="contained"
-                color="primary"
-                startIcon={<AddIcon />}
-                onClick={() => handleElementSelect("Honors/Awards")& draftCVActions.createDraftCV()}>
-                Honors/Awards
-              </Button>
+              variant="contained"
+              color="primary"
+              startIcon={<AddIcon />}
+              onClick={() => handleButtonClick()}>
+              Choose Element
+            </Button>
+
+            {itemSelect && ( //Replace by ItemSelectMenu when finsihed
+              <List>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  startIcon={<AddIcon />}
+                  onClick={() =>
+                    handleElementSelect("Experience") &
+                    draftCVActions.createDraftCV()
+                  }>
+                  Experience
+                </Button>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  startIcon={<AddIcon />}
+                  onClick={() =>
+                    handleElementSelect("Publications") &
+                    draftCVActions.createDraftCV()
+                  }>
+                  Publications
+                </Button>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  startIcon={<AddIcon />}
+                  onClick={() =>
+                    handleElementSelect("Honors/Awards") &
+                    draftCVActions.createDraftCV()
+                  }>
+                  Honors/Awards
+                </Button>
+              </List>
+            )}
+
+            <List style={{ width: "100%" }}>
+              {CVs.map((CV) => (
+                <CVItem
+                  key={getCVId(CV)}
+                  CV={CV}
+                  CVActions={CVActions}
+                  CV_element={elementSelect} //Not sure if this is correct or whether the mapping should be modified
+                />
+              ))}
+
+              {draftCVs.map((draft) => (
+                <DraftCVItem
+                  key={getCVId(draft)}
+                  CV={draft}
+                  CVActions={CVActions}
+                  draftCVActions={draftCVActions}
+                  CV_element={elementSelect} //Not sure if this is correct or whether the mapping should be modified
+                />
+              ))}
             </List>
-          )}
-
-
-          <List style={{ width: "100%" }}>
-            {CVs.map((CV) => (
-              <CVItem
-                key={getCVId(CV)}
-                CV={CV}
-                CVActions={CVActions}
-                CV_element={elementSelect} //Not sure if this is correct or whether the mapping should be modified
-              />
-            ))}
-
-            {draftCVs.map((draft) => (
-              <DraftCVItem
-                key={getCVId(draft)}
-                CV={draft}
-                CVActions={CVActions}
-                draftCVActions={draftCVActions}
-                CV_element={elementSelect} //Not sure if this is correct or whether the mapping should be modified
-              />
-            ))}
-          </List></div>
+          </div>
         </div>
       )}
 
-      <div>
-        
-      </div>
+      <div></div>
 
       <MoreInfo />
     </Container>
