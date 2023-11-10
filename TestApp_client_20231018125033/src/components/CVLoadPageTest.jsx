@@ -1,34 +1,88 @@
-import React, { useState, useEffect, useRef } from "react";
-import jsPDF from "jspdf";
-import html2canvas from "html2canvas";
+import React, { useState, useEffect } from "react";
+import { useCVs } from "../hooks/useCVs";
 import Papa from "papaparse";
-import './CVLoadPage.css';
-import realmConfig from "../atlasConfig.json";
-import { App, Credentials } from "realm-web";
-
 
 export function CVLoadPageTest() {
-  const [cvData, setCvData] = useState(null);
-  const [publicationsData, setPublicationsData] = useState(null);
+  const { CVs } = useCVs();
+  const [publicationsData, setPublicationsData] = useState([]);
   const [showPublications, setShowPublications] = useState(false);
-  const componentRef = useRef();
-  const csvLinkRef = useRef();
 
-  const handlePrint = () => {
-    if (componentRef.current) {
-      const pdfWidth = 210;
-      const pdfHeight = 297;
-      componentRef.current.classList.add("pdf-small-text");
-      html2canvas(componentRef.current).then((canvas) => {
-        const imgData = canvas.toDataURL("image/png");
-        const pdf = new jsPDF("p", "mm", "a4");
-        pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
-        componentRef.current.classList.remove("pdf-small-text");
-        pdf.save(`CV_${cvData["Personal Information"]["name"]}.pdf`);
-        document.querySelector(".hide-in-pdf").classList.remove("hidden");
-      });
-      document.querySelector(".hide-in-pdf").classList.add("hidden");
+  useEffect(() => {
+    readCSV();
+  }, []);
+
+  const isNotEmpty = (value) => {
+    return value !== null && value !== undefined && value !== "";
+  };
+
+  const renderListItem = (cv, category, isSelected = true) => {
+    if (isSelected) {
+      return (
+        <>
+          <h2>{category}</h2>
+          {generateListItems(cv, category)}
+        </>
+      );
     }
+    return null;
+  };
+  
+  /*
+  const renderListItem = (cv, category) => {
+  const isSelected = cv[category][0]["isSelected"];
+
+  if (isSelected) {
+    return (
+      <>
+        <h2>{category}</h2>
+        {generateListItems(cv, category)}
+      </>
+    );
+  }
+  return null;
+};
+*/
+
+  const generateListItems = (cv, category) => {
+    if (cv[category]) {
+      if (Array.isArray(cv[category])) {
+        const filteredList = cv[category].filter((item) => {
+          if (typeof item === 'object' && !Array.isArray(item)) {
+            return Object.values(item).some((value) => isNotEmpty(value));
+          }
+          return isNotEmpty(item);
+        });
+
+        return (
+          <ul style={{ listStyleType: 'none', paddingLeft: '20px' }}>
+            {filteredList.map((item, index) => (
+              <li key={index} style={{ marginBottom: '10px' }}>
+                {Object.entries(item).map(([key, value]) => (
+                  <div key={key}>
+                    {`${key}: ${typeof value === 'object' ? JSON.stringify(value) : value}`}
+                  </div>
+                ))}
+              </li>
+            ))}
+          </ul>
+        );
+      } else if (typeof cv[category] === 'object') {
+        const filteredObject = Object.fromEntries(
+          Object.entries(cv[category]).filter(([key, value]) => isNotEmpty(value))
+        );
+
+        return (
+          <ul style={{ listStyleType: 'none', paddingLeft: '20px' }}>
+            {Object.keys(filteredObject).map((key) => (
+              <li key={key} style={{ marginBottom: '10px' }}>
+                {filteredObject[key]}
+              </li>
+            ))}
+          </ul>
+        );
+      }
+    }
+    return null;
   };
 
   const readCSV = () => {
@@ -42,158 +96,63 @@ export function CVLoadPageTest() {
     });
   };
 
-  useEffect(() => {
-    const fetchDataFromDatabase = async () => {
-      const app = new App(realmConfig.appId);
-    
-      try {
-        const credentials = Credentials.emailPassword("tristan.rebeyrol@gmail.com", "oui123");
-        const user = await app.logIn(credentials);
-    
-        const userId = user.id;
-    
-        const mongodb = app.currentUser.mongoClient("mongodb-atlas");
-        const cvDataCollection = mongodb.db("CvCluster").collection("CV/cvdb/CVs");
-        const data = await cvDataCollection.find({});
-        setCvData(data);
-      } catch (error) {
-        console.error('Erreur lors de la récupération des données :', error);
-      }
-    };
-    
-
-    fetchDataFromDatabase();
-    readCSV();
-  }, []);
-
-  const togglePublications = () => {
-    setShowPublications(!showPublications);
-  };
-
-  console.log(cvData);
   return (
     <div>
-      <button onClick={handlePrint}>Télécharger</button>
-      <div ref={componentRef} style={{ width: "210mm", height: "297mm" }}>
-        {cvData && (
-          <div>
-            <h1>CV {cvData["Personal Information"]["surname"]}</h1>
-            <h2>Informations Personnelles</h2>
-            <ul>
-              <li>Nom : {cvData["Personal Information"]["name"]}</li>
-              <li>Prénom : {cvData["Personal Information"]["surname"]}</li>
-              <li>Date de Naissance : {cvData["Personal Information"]["dateBirth"]}</li>
-              <li>Mail : {cvData["Personal Information"]["Mail"]}</li>
-              <li>Téléphone : {cvData["Personal Information"]["Telephone"]}</li>
-              <li>Adresse : {cvData["Personal Information"]["Adresse"]}</li>
-              <li>Âge : {cvData["Personal Information"]["Age"]}</li>
-              <li>Nationalité : {cvData["Personal Information"]["Nationality"]}</li>
-            </ul>
+      {CVs.map((cv) => (
+        <div key={cv._id}>
+          <h2>{`${cv["Personal Information"]["name"]} ${cv["Personal Information"]["surname"]}`}</h2>
 
-            <h2>Qualifications</h2>
-            {cvData["Qualifications"] && cvData["Qualifications"].map((qualification, index) => (
-              qualification["Date"] && (
-                <ul key={index}>
-                  <li>Date: {qualification["Date"]}</li>
+          {renderListItem(cv, "Personal Information", cv["Personal Information"]["isSelected"])}
 
-                </ul>
-              )
-            ))}
+          {renderListItem(cv, "Qualifications", cv["Qualifications"][0]["isSelected"])}
 
-            <h2>Education</h2>
-            {cvData["Education"] && cvData["Education"].map((education, index) => (
-              education["Institution"] && (
-                <ul key={index}>
-                  <li>Institution: {education["Institution"]}</li>
-                  <li>Field: {education["Field"]}</li>
-                  <li>Date: {education["Date"]}</li>
-                  <li>Thesis: {education["Thesis"]}</li>
-                  <h3>Supervisors</h3>
-                  <ul>
-                    {education["Supervisor"] && education["Supervisor"].map((supervisor, sIndex) => (
-                      supervisor["Name"] && (
-                        <li key={sIndex}>
-                          Name: {supervisor["Name"]}
-                          Title: {supervisor["Title"]}
-                        </li>
-                      )
-                    ))}
-                  </ul>
-                  <li>Funding: {education["Funding"]}</li>
-                </ul>
-              )
-            ))}
+          {renderListItem(cv, "Education", cv["Education"][0]["isSelected"])}
 
-            <h2>Experience</h2>
-            {cvData["Experience"] && cvData["Experience"].map((experience, index) => (
-              experience["Details"] && (
-                <ul key={index}>
-                </ul>
-              )
-            ))}
+          {renderListItem(cv, "Experience", cv["Experience"][0]["isSelected"])}
 
-            <h2>Publications</h2>
-            {publicationsData && (
-              <table>
+          {renderListItem(cv, "Publications", cv["Publications"][0]["isSelected"]) && (
+            <div>
+              <h2>Publications</h2>
+              {publicationsData.length > 0 && (
+                <table style={{ width: "100%" }}>
                 <thead>
                   <tr>
-                    <th>Auteurs</th>
-                    <th>Titre</th>
-                    <th>Publication</th>
-                    <th>Volume</th>
-                    <th>Nombre</th>
-                    <th>Page</th>
-                    <th>Année</th>
-                    <th>Editeur</th>
+                    <th style={{ width: "10%" }}>Auteurs</th>
+                    <th style={{ width: "10%" }}>Titre</th>
+                    <th style={{ width: "10%" }}>Publication</th>
+                    <th style={{ width: "10%" }}>Volume</th>
+                    <th style={{ width: "10%" }}>Nombre</th>
+                    <th style={{ width: "10%" }}>Page</th>
+                    <th style={{ width: "10%" }}>Année</th>
+                    <th style={{ width: "20%" }}>Editeur</th>
                   </tr>
                 </thead>
-                <tbody>
-                  {publicationsData.slice(0, showPublications ? publicationsData.length : 2).map((publication, index) => (
+                  <tbody>
+                  {publicationsData.map((publication, index) => (
                     <tr key={index}>
-                      <td>{publication["Authors"] || ""}</td>
-                      <td>{publication["Title"] || ""}</td>
-                      <td>{publication["Publication"] || ""}</td>
-                      <td>{publication["Volume"] || ""}</td>
-                      <td>{publication["Number"] || ""}</td>
-                      <td>{publication["Pages"] || ""}</td>
-                      <td>{publication["Year"] || ""}</td>
-                      <td>{publication["Publisher"] || ""}</td>
+                      <td>{isNotEmpty(publication["Authors"]) && publication["Authors"]}</td>
+                      <td>{isNotEmpty(publication["Title"]) && publication["Title"]}</td>
+                      <td>{isNotEmpty(publication["Publication"]) && publication["Publication"]}</td>
+                      <td>{isNotEmpty(publication["Volume"]) ? publication["Volume"] : ""}</td>
+                      <td>{isNotEmpty(publication["Number"]) ? publication["Number"] : ""}</td>
+                      <td>{isNotEmpty(publication["Pages"]) ? publication["Pages"] : ""}</td>
+                      <td>{isNotEmpty(publication["Year"]) ? publication["Year"] : ""}</td>
+                      <td>{isNotEmpty(publication["Publisher"]) ? publication["Publisher"] : ""}</td>
                     </tr>
                   ))}
-                </tbody>
-              </table>
-            )}
-            {publicationsData && publicationsData.length > 2 && (
-              <button onClick={togglePublications}>
-                {showPublications ? "Masquer Publications" : "Afficher toutes les publications"}
-              </button>
-            )}
-            <a
-              ref={csvLinkRef}
-              className="hide-in-pdf"
-              style={{ display: "none" }}
-              href="/citations.csv"
-              download={`CV_${cvData["Personal Information"]["surname"]}.csv`}
-            ></a>
-          </div>
-        )}
 
-        <h2>Professional Affiliations</h2>
-        {cvData && cvData["Professional Affiliations"] && cvData["Professional Affiliations"].map((affiliation, index) => (
-          affiliation["Details"] && (
-            <ul key={index}>
-            </ul>
-          )
-        ))}
 
-        <h2>Honors/Awards/Grants</h2>
-        {cvData && cvData["Honors/Awards/Grants"] && cvData["Honors/Awards/Grants"].map((award, index) => (
-          award["Details"] && (
-            <ul key={index}>
-            </ul>
-          )
-        ))}
-      </div>
+                  </tbody>
+                </table>
+              )}
+            </div>
+          )}
+
+          {renderListItem(cv, "Professional Affiliations", cv["Professional Affiliations"][0]["isSelected"])}
+
+          {renderListItem(cv, "Honors/Awards/Grants", cv["Honors/Awards/Grants"][0]["isSelected"])}
+        </div>
+      ))}
     </div>
   );
 }
