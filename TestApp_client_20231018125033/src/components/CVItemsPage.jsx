@@ -16,6 +16,7 @@ import { useShowLoader } from "../hooks/util-hooks";
 import { MoreInfo } from "./MoreInfo";
 import { getCVId } from "../utils";
 import { FormElement } from "./FormElement";
+import { ItemSelectMenu } from "./ItemSelectMenu";
 export function CVItemsPage() {
   const { loading, CVs, ...CVActions } = useCVs();
   const { draftCVs, ...draftCVActions } = useDraftCVs();
@@ -99,36 +100,17 @@ export function CVItemsPage() {
           </Button>
 
           {itemSelect && ( //Replace by ItemSelectMenu when finsihed
-            <List>
-              <Button
-                variant="contained"
-                color="primary"
-                startIcon={<AddIcon />}
-                onClick={() =>
-                  handleElementSelect("name") & draftCVActions.createDraftCV()
-                }>
-                name
-              </Button>
-              <Button
-                variant="contained"
-                color="primary"
-                startIcon={<AddIcon />}
-                onClick={() =>
-                  handleElementSelect("nationality") &
-                  draftCVActions.createDraftCV()
-                }>
-                nationality
-              </Button>
-              <Button
-                variant="contained"
-                color="primary"
-                startIcon={<AddIcon />}
-                onClick={() =>
-                  handleElementSelect("Other") & draftCVActions.createDraftCV()
-                }>
-                Other
-              </Button>
-            </List>
+            <ItemSelectMenu
+              CVActions={CVActions}
+              draftCVs={draftCVs}
+              draftCVActions={draftCVActions}
+              CV_category_list={[
+                "Experience",
+                "Publications",
+                "Honors/Awards",
+              ]}
+            
+            />
           )}
 
           <List style={{ width: "100%" }}>
@@ -143,7 +125,7 @@ export function CVItemsPage() {
 
            
 
-            {draftCVs.map((draft) => (
+            {/* {draftCVs.map((draft) => (
               <DraftCVItem
                 key={getCVId(draft)}
                 CV={draft}
@@ -151,7 +133,7 @@ export function CVItemsPage() {
                 draftCVActions={draftCVActions}
                 CV_element={elementSelect} //Not sure if this is correct or whether the mapping should be modified
               />
-            ))}
+            ))} */}
           </List>
           <div>
             <div />
@@ -165,41 +147,7 @@ export function CVItemsPage() {
               Choose Element
             </Button>
 
-            {itemSelect && ( //Replace by ItemSelectMenu when finsihed
-              <List>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  startIcon={<AddIcon />}
-                  onClick={() =>
-                    handleElementSelect("Experience") &
-                    draftCVActions.createDraftCV()
-                  }>
-                  Experience
-                </Button>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  startIcon={<AddIcon />}
-                  onClick={() =>
-                    handleElementSelect("Publications") &
-                    draftCVActions.createDraftCV()
-                  }>
-                  Publications
-                </Button>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  startIcon={<AddIcon />}
-                  onClick={() =>
-                    handleElementSelect("Honors/Awards") &
-                    draftCVActions.createDraftCV()
-                  }>
-                  Honors/Awards
-                </Button>
-              </List>
-            )}
-
+          
             <List style={{ width: "100%" }}>
               {CVs.map((CV) => (
                 <CVItem
@@ -210,15 +158,7 @@ export function CVItemsPage() {
                 />
               ))}
 
-              {draftCVs.map((draft) => (
-                <DraftCVItem
-                  key={getCVId(draft)}
-                  CV={draft}
-                  CVActions={CVActions}
-                  draftCVActions={draftCVActions}
-                  CV_element={elementSelect} //Not sure if this is correct or whether the mapping should be modified
-                />
-              ))}
+             
             </List>
           </div>
         </div>
