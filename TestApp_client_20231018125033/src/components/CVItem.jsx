@@ -2,6 +2,7 @@ import React from "react";
 import {
   Checkbox,
   IconButton,
+  List,
   ListItem,
   ListItemIcon,
   ListItemSecondaryAction,
@@ -9,14 +10,12 @@ import {
 } from "@mui/material";
 import ClearIcon from "@mui/icons-material/Clear";
 
-export function CVItem({ CV, CVActions, CV_element }) {
-  
-  const [chosenElement, setChosenElement] = React.useState(CV_element);
-  const handleElementSelect = (CV_element) => {
-    setChosenElement(CV_element);
-  };
- 
-  
+export function CVItem({ CV, CVActions, CV_element_list }) {
+  // const [chosenElement, setChosenElement] = React.useState(CV_element);
+  // const handleElementSelect = (CV_element) => {
+  //   setChosenElement(CV_element);
+  // };
+
   return (
     <ListItem>
       <ListItemIcon>
@@ -31,7 +30,14 @@ export function CVItem({ CV, CVActions, CV_element }) {
         />
       </ListItemIcon>
       {/* We can change CV.name to CV["name"], also we can make this function generic without crashing the code */}
-      <ListItemText>{CV[chosenElement]}</ListItemText>
+      {CV_element_list.map((CV_element) => (
+        <List key={CV_element}>
+          <ListItem>
+            <ListItemText>{CV_element} :  {CV[CV_element]}</ListItemText>
+          </ListItem>
+        </List>
+      ))}
+
       <ListItemSecondaryAction>
         <IconButton
           data-testid="CV-delete-button"
@@ -39,8 +45,7 @@ export function CVItem({ CV, CVActions, CV_element }) {
           size="small"
           onClick={() => {
             CVActions.deleteCV(CV);
-          }}
-        >
+          }}>
           <ClearIcon />
         </IconButton>
       </ListItemSecondaryAction>

@@ -17,6 +17,24 @@ export function ItemSelectMenu({CVActions, draftCVs, draftCVActions, CV_category
       case "Honors/Awards":
         setCV_element_list(["award_title", "award_date", "award_summary",]);
         break;
+
+      case "Education":
+        setCV_element_list(["institution_name", "degree", "start_date", "end_date", "education_summary",]);
+        break;
+      case "Skills":
+        setCV_element_list(["skill_name", "skill_level",]);
+        break;
+      case "Languages":
+        setCV_element_list(["language_name", "language_level",]);
+        break;
+      case "Interests":
+        setCV_element_list(["interest_name", "interest_level",]);
+        break;
+      case "References":
+        setCV_element_list(["reference_name", "reference_function", "reference_contact",]);
+        break;
+      
+
       default:
         
         break;

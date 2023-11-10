@@ -37,10 +37,10 @@ export function CVItemsPage() {
   //   setBasicInfoExists(true);
   // };
 
-   const [formRender, setFormRender] = React.useState(false);
-   const handleFormRender = () => {
-     setFormRender(true);
-   };
+  const [formRender, setFormRender] = React.useState(false);
+  const handleFormRender = () => {
+    setFormRender(true);
+  };
 
   // React.useEffect(() => {
   //   const hasBasicInfo = CVs.some((CV) => CV.first_name !== "");
@@ -64,16 +64,16 @@ export function CVItemsPage() {
           </Typography>
 
           {/* {!basicInfoExists && ( */}
-            <Button
-              onClick={() =>
-                draftCVActions.createDraftCV() &
-                handleFormRender() 
-                // setBasicInfoExists(true)
-              }>
-              Generate Basic Info{" "}
-            </Button>
+          <Button
+            onClick={
+              () => draftCVActions.createDraftCV() & handleFormRender()
+              // setBasicInfoExists(true)
+            }>
+            Generate Basic Info{" "}
+          </Button>
           {/* )}  */}
-          {formRender && ( 
+          <Divider>Personal Info </Divider>
+          {formRender && (
             <FormElement
               key={getCVId(draftCVs[0])}
               CV={draftCVs[0]}
@@ -89,8 +89,26 @@ export function CVItemsPage() {
                 "address",
               ]}
             />
-         )} 
-
+          )}
+          <div>
+            <List style={{ width: "100%" }}>
+              {CVs.map((CV) => (
+                <CVItem
+                  key={getCVId(CV)}
+                  CV={CV}
+                  CVActions={CVActions}
+                  CV_element_list={[ "first_name",
+                  "last_name",
+                  "nationality",
+                  "date_of_birth",
+                  "email",
+                  "phone_number",
+                  "address",]} //Not sure if this is correct or whether the mapping should be modified
+                />
+              ))}
+            </List>
+          </div>
+          <Divider>Academic Info </Divider>
           <Button
             variant="contained"
             color="primary"
@@ -105,15 +123,35 @@ export function CVItemsPage() {
               draftCVs={draftCVs}
               draftCVActions={draftCVActions}
               CV_category_list={[
-                "Experience",
-                "Publications",
-                "Honors/Awards",
+                "Education",
+                "Skills",
+                "Languages",
+                "Interests",
+                "References",
               ]}
-            
             />
           )}
 
-          <List style={{ width: "100%" }}>
+          <Divider>Work Experience </Divider>
+
+          <Button
+            variant="contained"
+            color="primary"
+            startIcon={<AddIcon />}
+            onClick={() => handleButtonClick()}>
+            Choose CV Element
+          </Button>
+
+          {itemSelect && ( //Replace by ItemSelectMenu when finsihed
+            <ItemSelectMenu
+              CVActions={CVActions}
+              draftCVs={draftCVs}
+              draftCVActions={draftCVActions}
+              CV_category_list={["Experience", "Publications", "Honors/Awards"]}
+            />
+          )}
+
+          {/* <List style={{ width: "100%" }}>
             {CVs.map((CV) => (
               <CVItem
                 key={getCVId(CV)}
@@ -122,8 +160,6 @@ export function CVItemsPage() {
                 CV_element={elementSelect} //Not sure if this is correct or whether the mapping should be modified
               />
             ))}
-
-           
 
             {/* {draftCVs.map((draft) => (
               <DraftCVItem
@@ -134,31 +170,23 @@ export function CVItemsPage() {
                 CV_element={elementSelect} //Not sure if this is correct or whether the mapping should be modified
               />
             ))} */}
-          </List>
+          {/* </List> */} 
           <div>
-            <div />
-            <Divider>Work</Divider>
-            <div />
-            <Button
-              variant="contained"
-              color="primary"
-              startIcon={<AddIcon />}
-              onClick={() => handleButtonClick()}>
-              Choose Element
-            </Button>
-
-          
             <List style={{ width: "100%" }}>
               {CVs.map((CV) => (
                 <CVItem
                   key={getCVId(CV)}
                   CV={CV}
                   CVActions={CVActions}
-                  CV_element={elementSelect} //Not sure if this is correct or whether the mapping should be modified
+                  CV_element_list={[ "first_name",
+                  "last_name",
+                  "nationality",
+                  "date_of_birth",
+                  "email",
+                  "phone_number",
+                  "address",]} //Not sure if this is correct or whether the mapping should be modified
                 />
               ))}
-
-             
             </List>
           </div>
         </div>

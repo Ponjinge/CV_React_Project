@@ -27,7 +27,7 @@ export function FormElement({
         <FormControl sx={{ m: 3 }} variant="standard">
           <FormLabel id="cv-entry">Enter your CV information</FormLabel>
           <div>
-            <Divider>Personal Info </Divider>
+            
 
             {CV_element_list.map((formElement) => (
               <FormTextField
@@ -52,7 +52,7 @@ export function FormElement({
             SUBMIT{" "}
           </Button>
 
-          <Divider>Academic Info </Divider>
+         
         </FormControl>
       </form>
     </Box>
