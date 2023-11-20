@@ -9,6 +9,7 @@ import { ThemeProvider } from "./Theme";
 import { AppName } from "./AppName";
 import atlasConfig from "../atlasConfig.json";
 import "./App.css";
+import { CVPresentation } from "./CVPresentation";
 const { appId } = atlasConfig;
 
 export default function ProvidedApp() {
@@ -65,7 +66,7 @@ function App() {
       {/* If a user is signed in, load the CV Item Page. Else load the sign up/log in page */}
       {/* We can add another conditional statement here to render the CV visualizer here*/}
       {/* or add a button on the CV Composition page  */}
-      {currentUser ?(page === "CVItemsPage" ? <CVItemsPage /> : <CVLoadPage/>) : <WelcomePage />}
+      {currentUser ?(page === "CVItemsPage" ? <CVItemsPage /> : <CVPresentation/>) : <WelcomePage />}
     </div>
   );
 }
